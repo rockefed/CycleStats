@@ -1,0 +1,31 @@
+TODO:
+[ ] Generic IdentifyOldActivities method so Streams can also use it
+[ ] Check how many activities' streams are missing, compare against remaining api hits and loop that many calls for streams
+[ ] Make the GetStreams method also do an insert after each one
+[ ] Figure out how to use variables in the conn string to postgres to remove the conns from other methods
+[ ] Add logging for each insert
+[ ] add logging for each connection
+[ ] 
+[ ] 
+[ ] 
+[ ] 
+[ ] 
+[ ] 
+[ ] 
+[ ] 
+[ ] 
+[ ] 
+[ ] 
+[ ] 
+[ ] 
+[ ] 
+Nice to Have's
+[ ] Add ability to retresh access_token from script instread of using Postman
+[ ] 
+[ ] 
+[ ] 
+[ ] 
+[ ] 
+[ ] 
+[ ] 
+[ ] 
