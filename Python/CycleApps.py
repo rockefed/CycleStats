@@ -20,7 +20,7 @@ import os
 window = Tk()
 
 window.title("Cycle Stats")
-window.geometry('800x300')
+window.geometry('600x400')
 
 
 #############################################
@@ -382,87 +382,93 @@ def CheckApiCalls():
 ## UI Variables to set ##
 #########################
 
+lbl_api_hdr = Label(window, text="Strava API", font= ('Arial 14 bold'))
+lbl_api_hdr.grid(column=1, row=0, pady= 10)
+
 per_mins = StringVar()
 per_day = StringVar()
 per_mins.set(0)
 per_day.set(0)
 btn_api_check = Button(window, text="Check API Calls", command=CheckApiCalls)
-btn_api_check.grid(column=0, row=0)
+btn_api_check.grid(column=0, row=1)
 lbl_api_15min = Label(window, text="15mins:")
-lbl_api_15min.grid(column=2, row=0)
+lbl_api_15min.grid(column=1, row=1)
 lbl_api_15min_val = Label(window, textvariable=per_mins)
-lbl_api_15min_val.grid(column=3, row=0)
+lbl_api_15min_val.grid(column=2, row=1)
 lbl_api_1day = Label(window, text="1day: ")
-lbl_api_1day.grid(column=4, row=0)
+lbl_api_1day.grid(column=3, row=1)
 lbl_api_1day_val = Label(window, textvariable=per_day)
-lbl_api_1day_val.grid(column=5, row=0)
+lbl_api_1day_val.grid(column=4, row=1)
+
+lbl_api_hdr = Label(window, text="Connection Settings", font= ('Arial 14 bold'))
+lbl_api_hdr.grid(column=1, row=2, pady= 10)
 
 lbl_access_token = Label(window, text="API Access Token")
-lbl_access_token.grid(column=0, row=1)
+lbl_access_token.grid(column=0, row=3)
 txt_access_token = Entry(window,width=50)
-txt_access_token.grid(column=1, row=1, columnspan=2)
+txt_access_token.grid(column=1, row=3, columnspan=2)
 
 lbl_db_user = Label(window, text="Postgres User")
-lbl_db_user.grid(column=0, row=2)
+lbl_db_user.grid(column=0, row=4)
 txt_db_user = Entry(window,width=50)
-txt_db_user.grid(column=1, row=2, columnspan=2)
+txt_db_user.grid(column=1, row=4, columnspan=2)
 txt_db_user.insert(0, os.getenv('POSTGRES_USER') or '')
 
 lbl_db_pw = Label(window, text="Postgres Password")
-lbl_db_pw.grid(column=0, row=3)
+lbl_db_pw.grid(column=0, row=5)
 txt_db_pw = Entry(window,width=50,show="*")
-txt_db_pw.grid(column=1, row=3, columnspan=2)
+txt_db_pw.grid(column=1, row=5, columnspan=2)
 txt_db_pw.insert(0, os.getenv('POSTGRES_PASSWORD') or '')
 
 lbl_db_host = Label(window, text="Postgres Host")
-lbl_db_host.grid(column=0, row=4)
+lbl_db_host.grid(column=0, row=6)
 txt_db_host = Entry(window,width=50)
-txt_db_host.grid(column=1, row=4, columnspan=2)
+txt_db_host.grid(column=1, row=6, columnspan=2)
 txt_db_host.insert(0, 'localhost')
 
 lbl_db = Label(window, text="Postgres Database")
-lbl_db.grid(column=0, row=5)
+lbl_db.grid(column=0, row=7)
 txt_db = Entry(window,width=50)
-txt_db.grid(column=1, row=5, columnspan=2)
+txt_db.grid(column=1, row=7, columnspan=2)
 txt_db.insert(0, os.getenv('POSTGRES_DB') or '')
 
 btn_connect = Button(window, text="Connect", command=Connect)
-btn_connect.grid(column=0, row=6)
+btn_connect.grid(column=0, row=8)
 
 btn_api_all = Button(window, text="Pull Everything", command=PullAllDataFromApi)
-btn_api_all.grid(column=1, row=6)
+btn_api_all.grid(column=1, row=8)
 
 #############################################
 #############
 ## Exports ##
 #############
-lbl_exports = Label(window, text="Exports as a CSV")
-lbl_exports.grid(column=1, row=7)
+lbl_exports = Label(window, text="Export", font= ('Arial 14 bold'))
+lbl_exports.grid(column=1, row=9, pady= 10)
 
 # Date Range Filters
 lbl_export_date_range = Label(window, text="Date Range")
-lbl_export_date_range.grid(column=0, row=9)
+lbl_export_date_range.grid(column=0, row=11)
 txt_export_date_range_start = DateEntry(window,width=25)
-txt_export_date_range_start.grid(column=1, row=9)
+txt_export_date_range_start.grid(column=1, row=11)
 txt_export_date_range_end = DateEntry(window,width=25)
-txt_export_date_range_end.grid(column=2, row=9)
+txt_export_date_range_end.grid(column=2, row=11)
 
 # Activity Type Filters
-chk_cycle_virtual = Checkbutton(window, text='Virtual Rides')
-chk_cycle_virtual.grid(column=0, row=10)
-chk_cycle_outdoor = Checkbutton(window, text='Outdoor Rides')
-chk_cycle_outdoor.grid(column=1, row=10)
-chk_run = Checkbutton(window, text='Runs')
-chk_run.grid(column=2, row=10)
+#chk_cycle_virtual = Checkbutton(window, text='Virtual Rides')
+#chk_cycle_virtual.grid(column=0, row=10)
+#chk_cycle_outdoor = Checkbutton(window, text='Outdoor Rides')
+#chk_cycle_outdoor.grid(column=1, row=10)
+#chk_run = Checkbutton(window, text='Runs')
+#chk_run.grid(column=2, row=10)
 
 btn_export_acts = Button(window, text="Activities", command=clicked)
-btn_export_acts.grid(column=0, row=11)
+btn_export_acts.grid(column=0, row=13)
 
 btn_export_streams = Button(window, text="Activity Streams", command=clicked)
-btn_export_streams.grid(column=0, row=12)
+btn_export_streams.grid(column=1, row=13)
 
 btn_export_logs = Button(window, text="DB Logs", command=clicked)
-btn_export_logs.grid(column=0, row=13)
+btn_export_logs.grid(column=2, row=13)
 
 
 window.mainloop()
