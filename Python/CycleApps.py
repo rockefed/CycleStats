@@ -7,10 +7,10 @@ Created on Wed Jun 30 16:33:48 2021
 
 from tkinter import *
 from tkcalendar import Calendar, DateEntry
-#from stravaio import strava_oauth2
+from stravaio import strava_oauth2
 from stravaio import StravaIO
-#import pandas as pd
-#import numpy as np
+import pandas as pd
+import numpy as np
 import psycopg2
 import datetime
 import random
@@ -337,45 +337,102 @@ class CyclingStats:
   
         self.insert_activities_streams_params = (None, None, None, None, None, None, None, None, None, None, None, None)
         self.CloseDb()
-    #######################################################################################
-    # UI 
-    #######################################################################################
-    # Will be called by a button on the UI for Users to export out a listing of their activities by date
-    #def ExportActivitiesFromDb(self, start_date, end_date):
-        # Pull list of activities from db filtered on date
         
-        # Store as dataframe
-        
-        # Export dataframe
+    #######################################################################################
+    # Exports
+    #######################################################################################
+    def ExportActivities(self, start_date, end_date):      
+        self.conn = psycopg2.connect(self.conn_string)
+        sql = "select * from GetActivities('{0}', '{1}')".format(start_date, end_date)
+        cur = self.conn.cursor()
+        cur.execute(sql)
+        return cur.fetchall()
+    
+    def ExportStreams(self, start_date, end_date):      
+        self.conn = psycopg2.connect(self.conn_string)
+        sql = "select * from GetStreams('{0}', '{1}')".format(start_date, end_date)
+        cur = self.conn.cursor()
+        cur.execute(sql)
+        return cur.fetchall()
+    
+    def ExportLogs(self, start_date, end_date):      
+        self.conn = psycopg2.connect(self.conn_string)
+        sql = "select * from GetLogs('{0}', '{1}')".format(start_date, end_date)
+        cur = self.conn.cursor()
+        cur.execute(sql)
+        return cur.fetchall()
+    
+    def ExportProcessedActivities(self, start_date, end_date):      
+        self.conn = psycopg2.connect(self.conn_string)
+        sql = "select * from GetProcessedActivities('{0}', '{1}')".format(start_date, end_date)
+        cur = self.conn.cursor()
+        cur.execute(sql)
+        return cur.fetchall()
 
 #############################################
 #######################
 ## UI Functionalilty ##
 #######################
 def clicked():
-    res = "Welcome to " + txt.get()
-    lbl.configure(text= res)
-    
+    pass
+
+# must be run prior to interacting with api or db
 def Connect():
     global cs    
-    cs = CyclingStats(str(txt_db_host.get()), txt_db.get(), txt_db_user.get(), txt_db_pw.get(), txt_access_token.get())
-    cs.DbConnString()
+    try:
+        cs = CyclingStats(str(txt_db_host.get()), txt_db.get(), txt_db_user.get(), txt_db_pw.get(), txt_access_token.get())
+        cs.DbConnString()
+        status_text.set("Connected to PostGreSQL CyclingStats database")
+    except Exception as e:
+        status_text.set(e.args)
 
-    
 def PullAllDataFromApi():
-    cs.OneClick()
+    try:
+        status_text.set("Pulling data from Strava API")
+        cs.OneClick()
+        status_text.set("CyclingStats database is up-to-date with the Strava API")
+    except Exception as e:
+        status_text.set(e.args)
     
-def PullActivitiesData():
-    pass
-
-def PullActivityStreamsData():
-    pass
-
 def CheckApiCalls():
     _per_mins, _per_day = cs.CheckApiThreshold()
 
     per_mins.set(_per_mins)
     per_day.set(_per_day)
+    
+def ProcessActivities():
+    pass
+
+def ExportActivities(start_date, end_date):
+    status_text.set("Exporting Activities to a CSV")
+    text = cs.ExportActivities(start_date, end_date)
+    df = pd.DataFrame(text, columns = ["db_id", "achievement_count", "athlete", "athlete_count", "attribute_map", "average_speed", "average_watts", "comment_count", "commute", "device_watts", "discriminator", "distance", "elapsed_time", "elev_high"," elev_low", "end_latlng", "external_id", "flagged", "gear_id", "has_kudoed", "id", "kilojoules", "kudos_count", "manual", "map", "max_speed", "max_watts", "moving_time", "name", "photo_count", "private", "start_date", "start_date_local", "start_latlng", "swagger_types", "timezone", "total_elevation_gain", "total_photo_count", "trainer", "type", "upload_id", "weighted_average_watts", "workout_type", "isprocessed"])
+    df.to_csv('Activities_{0}_to_{1}.csv'.format(start_date, end_date))
+    status_text.set("Successfully exported Activities to a CSV")
+    
+def ExportStreams(start_date, end_date):
+    status_text.set("Exporting Streams to a CSV")
+    text = cs.ExportStreams(start_date, end_date)
+    df = pd.DataFrame(text, columns = ["db_id", "time", "distance", "altitude", "velocity_smooth", "heartrate", "cadence", "watts", "moving", "grade_smooth", "lat", "lng", "activity_id", "isprocessed"])
+    df.to_csv('Streams_{0}_to_{1}.csv'.format(start_date, end_date))
+    status_text.set("Successfully exported Streams to a CSV")
+    
+def ExportLogs(start_date, end_date):
+    status_text.set("Exporting Logs to a CSV")
+    text = cs.ExportLogs(start_date, end_date)
+    df = pd.DataFrame(text, columns = ["id", "timestamp", "who", "status", "source", "action_type", "db_table", "db_column", "db_value"])
+    df.to_csv('Logs_{0}_to_{1}.csv'.format(start_date, end_date))
+    status_text.set("Successfully exported Logs to a CSV")
+    
+def ExportProcessedActivities(start_date, end_date):
+    status_text.set("Exporting ProcessedActivities to a CSV")
+    text = cs.ExportProcessedActivities(start_date, end_date)
+    df = pd.DataFrame(text, columns=["DbId", "ActivityName", "Type", "StartDate", "Hour", "DayOfWeek", "AthleteId", "ElapsedTime_sec", "MovingTime_sec", "Distance_mile", "TotalElevationGain_ft", "AvgSpeed_mph", "MaxSpeed_mph", "Kilojoules", "AvgWatts", "WeightedAvgWatts", "MaxWatts", "ElevationHigh_ft", "ElevationLow_ft", "Timezone", "Achievements", "Athletes", "Kudos", "Photos", "Comments", "hasKudoed", "isPrivate", "ProcessedTimestamp"])
+    df.to_csv('ProcessedActivities_{0}_to_{1}.csv'.format(start_date, end_date))
+    status_text.set("Successfully exported ProcessedActivities to a CSV")
+    
+def ChangeButtonColors(color):
+    btn_api_check.bg
 
 #############################################
 #########################
@@ -432,11 +489,14 @@ txt_db = Entry(window,width=50)
 txt_db.grid(column=1, row=7, columnspan=2)
 txt_db.insert(0, os.getenv('POSTGRES_DB') or '')
 
-btn_connect = Button(window, text="Connect", command=Connect)
+btn_connect = Button(window, text="Connect to DB", command=Connect)
 btn_connect.grid(column=0, row=8)
 
-btn_api_all = Button(window, text="Pull Everything", command=PullAllDataFromApi)
+btn_api_all = Button(window, text="Update Entire DB with API", command=PullAllDataFromApi)
 btn_api_all.grid(column=1, row=8)
+
+btn_process_acts = Button(window, text="Process Activities", command=ProcessActivities)
+btn_process_acts.grid(column=2, row=8)
 
 #############################################
 #############
@@ -453,22 +513,35 @@ txt_export_date_range_start.grid(column=1, row=11)
 txt_export_date_range_end = DateEntry(window,width=25)
 txt_export_date_range_end.grid(column=2, row=11)
 
-# Activity Type Filters
-#chk_cycle_virtual = Checkbutton(window, text='Virtual Rides')
-#chk_cycle_virtual.grid(column=0, row=10)
-#chk_cycle_outdoor = Checkbutton(window, text='Outdoor Rides')
-#chk_cycle_outdoor.grid(column=1, row=10)
-#chk_run = Checkbutton(window, text='Runs')
-#chk_run.grid(column=2, row=10)
+lbl_raw = Label(window, text="Raw:")
+lbl_raw.grid(column=0, row=13)
 
-btn_export_acts = Button(window, text="Activities", command=clicked)
-btn_export_acts.grid(column=0, row=13)
+btn_export_acts = Button(window, text="Activities", command=lambda: ExportActivities(str(txt_export_date_range_start.get_date()), str(txt_export_date_range_end.get_date())))
+btn_export_acts.grid(column=1, row=13)
 
-btn_export_streams = Button(window, text="Activity Streams", command=clicked)
-btn_export_streams.grid(column=1, row=13)
+btn_export_streams = Button(window, text="Activity Streams", command=lambda: ExportStreams(str(txt_export_date_range_start.get_date()), str(txt_export_date_range_end.get_date())))
+btn_export_streams.grid(column=2, row=13)
 
-btn_export_logs = Button(window, text="DB Logs", command=clicked)
-btn_export_logs.grid(column=2, row=13)
+btn_export_logs = Button(window, text="DB Logs", command=lambda: ExportLogs(str(txt_export_date_range_start.get_date()), str(txt_export_date_range_end.get_date())))
+btn_export_logs.grid(column=3, row=13)
 
+lbl_processed = Label(window, text="Processed:")
+lbl_processed.grid(column=0, row=14)
+
+btn_export_acts_processed = Button(window, text="Activities", command=lambda: ExportProcessedActivities(str(txt_export_date_range_start.get_date()), str(txt_export_date_range_end.get_date())))
+btn_export_acts_processed.grid(column=1, row=14)
+
+#############################################
+#############
+## Status  ##
+#############
+status_text = StringVar()
+status_text.set("Not Connected")
+lbl_status = Label(window, text="Status:")
+lbl_status.grid(column=0, row=15)
+lbl_status_status = Label(window, textvariable=status_text)
+lbl_status_status.grid(column=1, row=15, columnspan=3)
+
+cs = None
 
 window.mainloop()
