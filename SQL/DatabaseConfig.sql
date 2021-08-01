@@ -108,8 +108,11 @@ alter table logs alter column timestamp set default now()::timestamp;
 --   +------------------+
 CREATE TABLE rpt_activities
 (
-    "DbId" integer,
+    "DbId" integer serial primary key,
+	"ActivityId" bigint,
     "ActivityName" character varying COLLATE pg_catalog."default",
+	"activities_db_id" integer,
+	"Activities_streams_db_id" integer,
     "Type" character varying COLLATE pg_catalog."default",
     "StartDate" timestamp without time zone,
     "Hour" integer,
@@ -424,4 +427,4 @@ commit;
 end; $$
 
 ---------------------------------------
---
+-- 
