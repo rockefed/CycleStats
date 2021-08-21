@@ -1,0 +1,1692 @@
+﻿<?xml version="1.0"?>
+<DTS:Executable xmlns:DTS="www.microsoft.com/SqlServer/Dts"
+  DTS:refId="Package"
+  DTS:CreationDate="8/20/2021 6:50:49 PM"
+  DTS:CreationName="Microsoft.Package"
+  DTS:CreatorComputerName="UGLYANIMALFARM"
+  DTS:CreatorName="UGLYANIMALFARM\rocke"
+  DTS:DTSID="{3BBCF462-8907-4A54-B586-395EBA1188A1}"
+  DTS:ExecutableType="Microsoft.Package"
+  DTS:LastModifiedProductVersion="15.0.2000.170"
+  DTS:LocaleID="1033"
+  DTS:ObjectName="Package"
+  DTS:PackageType="5"
+  DTS:VersionBuild="6"
+  DTS:VersionGUID="{BF7AB2CB-BDDA-46CB-9CF7-86E45022AA02}">
+  <DTS:Property
+    DTS:Name="PackageFormatVersion">8</DTS:Property>
+  <DTS:ConnectionManagers>
+    <DTS:ConnectionManager
+      DTS:refId="Package.ConnectionManagers[CycleStatsWarehouse_SqlServerDB]"
+      DTS:CreationName="OLEDB"
+      DTS:DTSID="{6EB5E7EE-4C2F-4D16-8F04-1F73CE541CC0}"
+      DTS:ObjectName="CycleStatsWarehouse_SqlServerDB">
+      <DTS:ObjectData>
+        <DTS:ConnectionManager
+          DTS:ConnectRetryCount="1"
+          DTS:ConnectRetryInterval="5"
+          DTS:ConnectionString="Data Source=UGLYANIMALFARM;Initial Catalog=CycleStatsWarehouse;Provider=SQLNCLI11.1;Integrated Security=SSPI;Auto Translate=False;" />
+      </DTS:ObjectData>
+    </DTS:ConnectionManager>
+    <DTS:ConnectionManager
+      DTS:refId="Package.ConnectionManagers[CycleStats_PostgresDB]"
+      DTS:CreationName="ODBC"
+      DTS:DTSID="{2F245927-72F0-4FF2-BF7C-37B476DDFC09}"
+      DTS:ObjectName="CycleStats_PostgresDB">
+      <DTS:ObjectData>
+        <DTS:ConnectionManager
+          DTS:ConnectionString="uid=postgres;Dsn=PostgreSQL35W;">
+          <DTS:Password
+            DTS:Name="pwd"
+            Sensitive="1"
+            Encrypted="1">AQAAANCMnd8BFdERjHoAwE/Cl+sBAAAAEtyRd5wAF0CDi9FqadFo/gAAAAAIAAAARABUAFMAAAAQZgAAAAEAACAAAAAqHIDxKJdwI/u7dDG7I0KEtHeYQmMmyTJHPZE6gTcSgAAAAAAOgAAAAAIAACAAAAAzRgu0jFC43KvpylzelWuauym6Lq6FtXiOnQ6RiM4g8CAAAADuKThSIZe/rtquTdKx9VFo4wedyqKyOQIIqk5qyslNlUAAAADXMhx7fdaRBLeOMWQlhYGkOu2fFKniKe/Tvnwt9593E/fg+O1EMpBTvGIFqgrK7QReyLHeBFkpKFHz6Y4Zeltz</DTS:Password>
+        </DTS:ConnectionManager>
+      </DTS:ObjectData>
+    </DTS:ConnectionManager>
+  </DTS:ConnectionManagers>
+  <DTS:Variables />
+  <DTS:Executables>
+    <DTS:Executable
+      DTS:refId="Package\PostgresDB to SQL Server RAW"
+      DTS:CreationName="Microsoft.Pipeline"
+      DTS:Description="Data Flow Task"
+      DTS:DTSID="{7036F741-EC48-4B73-86F3-756F8CE00710}"
+      DTS:ExecutableType="Microsoft.Pipeline"
+      DTS:LocaleID="-1"
+      DTS:ObjectName="PostgresDB to SQL Server RAW"
+      DTS:TaskContact="Performs high-performance data extraction, transformation and loading;Microsoft Corporation; Microsoft SQL Server; (C) Microsoft Corporation; All Rights Reserved;http://www.microsoft.com/sql/support/default.asp;1">
+      <DTS:Variables />
+      <DTS:ObjectData>
+        <pipeline
+          version="1">
+          <components>
+            <component
+              refId="Package\PostgresDB to SQL Server RAW\ODBC Source"
+              componentClassID="Microsoft.SSISODBCSrc"
+              contactInfo="ODBC Source;Microsoft Corporation; Microsoft SQL Server; (C) Microsoft Corporation; All Rights Reserved; http://www.microsoft.com/sql/support;1"
+              description="ODBC Source"
+              name="ODBC Source"
+              usesDispositions="true"
+              version="1">
+              <properties>
+                <property
+                  dataType="System.String"
+                  description="The name of the table to be fetched."
+                  expressionType="Notify"
+                  name="TableName">"public"."activities"</property>
+                <property
+                  dataType="System.String"
+                  description="The SQL command to be executed."
+                  expressionType="Notify"
+                  name="SqlCommand"
+                  UITypeEditor="Microsoft.DataTransformationServices.Controls.ModalMultilineStringEditor, Microsoft.DataTransformationServices.Controls, Version=15.0.0.0, Culture=neutral, PublicKeyToken=89845dcd8080cc91">SELECT db_id, achievement_count, athlete, athlete_count, attribute_map, average_speed, average_watts, comment_count, commute, device_watts, discriminator, distance, elapsed_time, elev_high, elev_low, end_latlng, external_id, flagged, gear_id, has_kudoed, id, kilojoules, kudos_count, manual, map, max_speed, max_watts, moving_time, name, photo_count, private, start_date, start_date_local, start_latlng, swagger_types, timezone, total_elevation_gain, total_photo_count, trainer, type, upload_id, weighted_average_watts, workout_type, isprocessed
+	FROM public.activities;</property>
+                <property
+                  dataType="System.Int32"
+                  description="Specify the number of rows fetched per batch."
+                  expressionType="Notify"
+                  name="BatchSize">1000</property>
+                <property
+                  dataType="System.Int32"
+                  description="Determines the chunk size allocation for LOB columns"
+                  expressionType="Notify"
+                  name="LobChunkSize">32768</property>
+                <property
+                  dataType="System.Boolean"
+                  description="Determines how the component exposes CHAR columns. If False, CHAR columns are exposed as (multi-)byte strings (DT_STR), if True, CHAR columns are exposed as wide strings (DT_WSTR)"
+                  expressionType="Notify"
+                  name="ExposeCharColumnsAsUnicode">false</property>
+                <property
+                  dataType="System.Int32"
+                  description="The number of seconds to wait for an SQL statement to execute before returning to the application."
+                  expressionType="Notify"
+                  name="StatementTimeout">0</property>
+                <property
+                  dataType="System.Int32"
+                  description="The code page to use when code page information is unavailable from the data source."
+                  expressionType="Notify"
+                  name="DefaultCodePage">1252</property>
+                <property
+                  dataType="System.Int32"
+                  description="The method used for fetching data."
+                  expressionType="Notify"
+                  name="FetchMethod">1</property>
+                <property
+                  dataType="System.Int32"
+                  description="The ODBC C data type for binding numeric data."
+                  expressionType="Notify"
+                  name="BindNumericAs">0</property>
+                <property
+                  dataType="System.Int32"
+                  description="Determines how the component would bind columns of (multi)-byte string types (i.e., SQL_CHAR, SQL_VARCHAR, SQL_LONGVARCHAR). The options are: Unicode (SQL_C_WCHAR) and ANSI (SQL_C_CHAR)."
+                  expressionType="Notify"
+                  name="BindCharColumnsAs">0</property>
+                <property
+                  dataType="System.Int32"
+                  description="The mode used to access the database."
+                  expressionType="Notify"
+                  name="AccessMode"
+                  typeConverter="AccessMode">0</property>
+              </properties>
+              <connections>
+                <connection
+                  refId="Package\PostgresDB to SQL Server RAW\ODBC Source.Connections[ODBCConnection]"
+                  connectionManagerID="Package.ConnectionManagers[CycleStats_PostgresDB]"
+                  connectionManagerRefId="Package.ConnectionManagers[CycleStats_PostgresDB]"
+                  description="The ODBC runtime connection used to access the database."
+                  name="ODBCConnection" />
+              </connections>
+              <outputs>
+                <output
+                  refId="Package\PostgresDB to SQL Server RAW\ODBC Source.Outputs[ODBC Source Output]"
+                  errorRowDisposition="FailComponent"
+                  name="ODBC Source Output"
+                  truncationRowDisposition="FailComponent">
+                  <outputColumns>
+                    <outputColumn
+                      refId="Package\PostgresDB to SQL Server RAW\ODBC Source.Outputs[ODBC Source Output].Columns[db_id]"
+                      dataType="i4"
+                      externalMetadataColumnId="Package\PostgresDB to SQL Server RAW\ODBC Source.Outputs[ODBC Source Output].ExternalColumns[db_id]"
+                      lineageId="Package\PostgresDB to SQL Server RAW\ODBC Source.Outputs[ODBC Source Output].Columns[db_id]"
+                      name="db_id" />
+                    <outputColumn
+                      refId="Package\PostgresDB to SQL Server RAW\ODBC Source.Outputs[ODBC Source Output].Columns[name]"
+                      dataType="nText"
+                      externalMetadataColumnId="Package\PostgresDB to SQL Server RAW\ODBC Source.Outputs[ODBC Source Output].ExternalColumns[name]"
+                      lineageId="Package\PostgresDB to SQL Server RAW\ODBC Source.Outputs[ODBC Source Output].Columns[name]"
+                      name="name" />
+                    <outputColumn
+                      refId="Package\PostgresDB to SQL Server RAW\ODBC Source.Outputs[ODBC Source Output].Columns[isprocessed]"
+                      codePage="1252"
+                      dataType="str"
+                      externalMetadataColumnId="Package\PostgresDB to SQL Server RAW\ODBC Source.Outputs[ODBC Source Output].ExternalColumns[isprocessed]"
+                      length="5"
+                      lineageId="Package\PostgresDB to SQL Server RAW\ODBC Source.Outputs[ODBC Source Output].Columns[isprocessed]"
+                      name="isprocessed" />
+                    <outputColumn
+                      refId="Package\PostgresDB to SQL Server RAW\ODBC Source.Outputs[ODBC Source Output].Columns[achievement_count]"
+                      dataType="i8"
+                      externalMetadataColumnId="Package\PostgresDB to SQL Server RAW\ODBC Source.Outputs[ODBC Source Output].ExternalColumns[achievement_count]"
+                      lineageId="Package\PostgresDB to SQL Server RAW\ODBC Source.Outputs[ODBC Source Output].Columns[achievement_count]"
+                      name="achievement_count" />
+                    <outputColumn
+                      refId="Package\PostgresDB to SQL Server RAW\ODBC Source.Outputs[ODBC Source Output].Columns[athlete]"
+                      dataType="nText"
+                      externalMetadataColumnId="Package\PostgresDB to SQL Server RAW\ODBC Source.Outputs[ODBC Source Output].ExternalColumns[athlete]"
+                      lineageId="Package\PostgresDB to SQL Server RAW\ODBC Source.Outputs[ODBC Source Output].Columns[athlete]"
+                      name="athlete" />
+                    <outputColumn
+                      refId="Package\PostgresDB to SQL Server RAW\ODBC Source.Outputs[ODBC Source Output].Columns[athlete_count]"
+                      dataType="i8"
+                      externalMetadataColumnId="Package\PostgresDB to SQL Server RAW\ODBC Source.Outputs[ODBC Source Output].ExternalColumns[athlete_count]"
+                      lineageId="Package\PostgresDB to SQL Server RAW\ODBC Source.Outputs[ODBC Source Output].Columns[athlete_count]"
+                      name="athlete_count" />
+                    <outputColumn
+                      refId="Package\PostgresDB to SQL Server RAW\ODBC Source.Outputs[ODBC Source Output].Columns[attribute_map]"
+                      dataType="nText"
+                      externalMetadataColumnId="Package\PostgresDB to SQL Server RAW\ODBC Source.Outputs[ODBC Source Output].ExternalColumns[attribute_map]"
+                      lineageId="Package\PostgresDB to SQL Server RAW\ODBC Source.Outputs[ODBC Source Output].Columns[attribute_map]"
+                      name="attribute_map" />
+                    <outputColumn
+                      refId="Package\PostgresDB to SQL Server RAW\ODBC Source.Outputs[ODBC Source Output].Columns[average_speed]"
+                      dataType="numeric"
+                      externalMetadataColumnId="Package\PostgresDB to SQL Server RAW\ODBC Source.Outputs[ODBC Source Output].ExternalColumns[average_speed]"
+                      lineageId="Package\PostgresDB to SQL Server RAW\ODBC Source.Outputs[ODBC Source Output].Columns[average_speed]"
+                      name="average_speed"
+                      precision="28"
+                      scale="6" />
+                    <outputColumn
+                      refId="Package\PostgresDB to SQL Server RAW\ODBC Source.Outputs[ODBC Source Output].Columns[average_watts]"
+                      dataType="numeric"
+                      externalMetadataColumnId="Package\PostgresDB to SQL Server RAW\ODBC Source.Outputs[ODBC Source Output].ExternalColumns[average_watts]"
+                      lineageId="Package\PostgresDB to SQL Server RAW\ODBC Source.Outputs[ODBC Source Output].Columns[average_watts]"
+                      name="average_watts"
+                      precision="28"
+                      scale="6" />
+                    <outputColumn
+                      refId="Package\PostgresDB to SQL Server RAW\ODBC Source.Outputs[ODBC Source Output].Columns[comment_count]"
+                      dataType="i8"
+                      externalMetadataColumnId="Package\PostgresDB to SQL Server RAW\ODBC Source.Outputs[ODBC Source Output].ExternalColumns[comment_count]"
+                      lineageId="Package\PostgresDB to SQL Server RAW\ODBC Source.Outputs[ODBC Source Output].Columns[comment_count]"
+                      name="comment_count" />
+                    <outputColumn
+                      refId="Package\PostgresDB to SQL Server RAW\ODBC Source.Outputs[ODBC Source Output].Columns[commute]"
+                      codePage="1252"
+                      dataType="str"
+                      externalMetadataColumnId="Package\PostgresDB to SQL Server RAW\ODBC Source.Outputs[ODBC Source Output].ExternalColumns[commute]"
+                      length="5"
+                      lineageId="Package\PostgresDB to SQL Server RAW\ODBC Source.Outputs[ODBC Source Output].Columns[commute]"
+                      name="commute" />
+                    <outputColumn
+                      refId="Package\PostgresDB to SQL Server RAW\ODBC Source.Outputs[ODBC Source Output].Columns[device_watts]"
+                      dataType="nText"
+                      externalMetadataColumnId="Package\PostgresDB to SQL Server RAW\ODBC Source.Outputs[ODBC Source Output].ExternalColumns[device_watts]"
+                      lineageId="Package\PostgresDB to SQL Server RAW\ODBC Source.Outputs[ODBC Source Output].Columns[device_watts]"
+                      name="device_watts" />
+                    <outputColumn
+                      refId="Package\PostgresDB to SQL Server RAW\ODBC Source.Outputs[ODBC Source Output].Columns[discriminator]"
+                      dataType="nText"
+                      externalMetadataColumnId="Package\PostgresDB to SQL Server RAW\ODBC Source.Outputs[ODBC Source Output].ExternalColumns[discriminator]"
+                      lineageId="Package\PostgresDB to SQL Server RAW\ODBC Source.Outputs[ODBC Source Output].Columns[discriminator]"
+                      name="discriminator" />
+                    <outputColumn
+                      refId="Package\PostgresDB to SQL Server RAW\ODBC Source.Outputs[ODBC Source Output].Columns[distance]"
+                      dataType="numeric"
+                      externalMetadataColumnId="Package\PostgresDB to SQL Server RAW\ODBC Source.Outputs[ODBC Source Output].ExternalColumns[distance]"
+                      lineageId="Package\PostgresDB to SQL Server RAW\ODBC Source.Outputs[ODBC Source Output].Columns[distance]"
+                      name="distance"
+                      precision="28"
+                      scale="6" />
+                    <outputColumn
+                      refId="Package\PostgresDB to SQL Server RAW\ODBC Source.Outputs[ODBC Source Output].Columns[elapsed_time]"
+                      dataType="i8"
+                      externalMetadataColumnId="Package\PostgresDB to SQL Server RAW\ODBC Source.Outputs[ODBC Source Output].ExternalColumns[elapsed_time]"
+                      lineageId="Package\PostgresDB to SQL Server RAW\ODBC Source.Outputs[ODBC Source Output].Columns[elapsed_time]"
+                      name="elapsed_time" />
+                    <outputColumn
+                      refId="Package\PostgresDB to SQL Server RAW\ODBC Source.Outputs[ODBC Source Output].Columns[elev_high]"
+                      dataType="numeric"
+                      externalMetadataColumnId="Package\PostgresDB to SQL Server RAW\ODBC Source.Outputs[ODBC Source Output].ExternalColumns[elev_high]"
+                      lineageId="Package\PostgresDB to SQL Server RAW\ODBC Source.Outputs[ODBC Source Output].Columns[elev_high]"
+                      name="elev_high"
+                      precision="28"
+                      scale="6" />
+                    <outputColumn
+                      refId="Package\PostgresDB to SQL Server RAW\ODBC Source.Outputs[ODBC Source Output].Columns[elev_low]"
+                      dataType="numeric"
+                      externalMetadataColumnId="Package\PostgresDB to SQL Server RAW\ODBC Source.Outputs[ODBC Source Output].ExternalColumns[elev_low]"
+                      lineageId="Package\PostgresDB to SQL Server RAW\ODBC Source.Outputs[ODBC Source Output].Columns[elev_low]"
+                      name="elev_low"
+                      precision="28"
+                      scale="6" />
+                    <outputColumn
+                      refId="Package\PostgresDB to SQL Server RAW\ODBC Source.Outputs[ODBC Source Output].Columns[end_latlng]"
+                      dataType="nText"
+                      externalMetadataColumnId="Package\PostgresDB to SQL Server RAW\ODBC Source.Outputs[ODBC Source Output].ExternalColumns[end_latlng]"
+                      lineageId="Package\PostgresDB to SQL Server RAW\ODBC Source.Outputs[ODBC Source Output].Columns[end_latlng]"
+                      name="end_latlng" />
+                    <outputColumn
+                      refId="Package\PostgresDB to SQL Server RAW\ODBC Source.Outputs[ODBC Source Output].Columns[external_id]"
+                      dataType="nText"
+                      externalMetadataColumnId="Package\PostgresDB to SQL Server RAW\ODBC Source.Outputs[ODBC Source Output].ExternalColumns[external_id]"
+                      lineageId="Package\PostgresDB to SQL Server RAW\ODBC Source.Outputs[ODBC Source Output].Columns[external_id]"
+                      name="external_id" />
+                    <outputColumn
+                      refId="Package\PostgresDB to SQL Server RAW\ODBC Source.Outputs[ODBC Source Output].Columns[flagged]"
+                      codePage="1252"
+                      dataType="str"
+                      externalMetadataColumnId="Package\PostgresDB to SQL Server RAW\ODBC Source.Outputs[ODBC Source Output].ExternalColumns[flagged]"
+                      length="5"
+                      lineageId="Package\PostgresDB to SQL Server RAW\ODBC Source.Outputs[ODBC Source Output].Columns[flagged]"
+                      name="flagged" />
+                    <outputColumn
+                      refId="Package\PostgresDB to SQL Server RAW\ODBC Source.Outputs[ODBC Source Output].Columns[gear_id]"
+                      dataType="nText"
+                      externalMetadataColumnId="Package\PostgresDB to SQL Server RAW\ODBC Source.Outputs[ODBC Source Output].ExternalColumns[gear_id]"
+                      lineageId="Package\PostgresDB to SQL Server RAW\ODBC Source.Outputs[ODBC Source Output].Columns[gear_id]"
+                      name="gear_id" />
+                    <outputColumn
+                      refId="Package\PostgresDB to SQL Server RAW\ODBC Source.Outputs[ODBC Source Output].Columns[has_kudoed]"
+                      codePage="1252"
+                      dataType="str"
+                      externalMetadataColumnId="Package\PostgresDB to SQL Server RAW\ODBC Source.Outputs[ODBC Source Output].ExternalColumns[has_kudoed]"
+                      length="5"
+                      lineageId="Package\PostgresDB to SQL Server RAW\ODBC Source.Outputs[ODBC Source Output].Columns[has_kudoed]"
+                      name="has_kudoed" />
+                    <outputColumn
+                      refId="Package\PostgresDB to SQL Server RAW\ODBC Source.Outputs[ODBC Source Output].Columns[id]"
+                      dataType="i8"
+                      externalMetadataColumnId="Package\PostgresDB to SQL Server RAW\ODBC Source.Outputs[ODBC Source Output].ExternalColumns[id]"
+                      lineageId="Package\PostgresDB to SQL Server RAW\ODBC Source.Outputs[ODBC Source Output].Columns[id]"
+                      name="id" />
+                    <outputColumn
+                      refId="Package\PostgresDB to SQL Server RAW\ODBC Source.Outputs[ODBC Source Output].Columns[kilojoules]"
+                      dataType="numeric"
+                      externalMetadataColumnId="Package\PostgresDB to SQL Server RAW\ODBC Source.Outputs[ODBC Source Output].ExternalColumns[kilojoules]"
+                      lineageId="Package\PostgresDB to SQL Server RAW\ODBC Source.Outputs[ODBC Source Output].Columns[kilojoules]"
+                      name="kilojoules"
+                      precision="28"
+                      scale="6" />
+                    <outputColumn
+                      refId="Package\PostgresDB to SQL Server RAW\ODBC Source.Outputs[ODBC Source Output].Columns[kudos_count]"
+                      dataType="i8"
+                      externalMetadataColumnId="Package\PostgresDB to SQL Server RAW\ODBC Source.Outputs[ODBC Source Output].ExternalColumns[kudos_count]"
+                      lineageId="Package\PostgresDB to SQL Server RAW\ODBC Source.Outputs[ODBC Source Output].Columns[kudos_count]"
+                      name="kudos_count" />
+                    <outputColumn
+                      refId="Package\PostgresDB to SQL Server RAW\ODBC Source.Outputs[ODBC Source Output].Columns[manual]"
+                      codePage="1252"
+                      dataType="str"
+                      externalMetadataColumnId="Package\PostgresDB to SQL Server RAW\ODBC Source.Outputs[ODBC Source Output].ExternalColumns[manual]"
+                      length="5"
+                      lineageId="Package\PostgresDB to SQL Server RAW\ODBC Source.Outputs[ODBC Source Output].Columns[manual]"
+                      name="manual" />
+                    <outputColumn
+                      refId="Package\PostgresDB to SQL Server RAW\ODBC Source.Outputs[ODBC Source Output].Columns[map]"
+                      dataType="nText"
+                      externalMetadataColumnId="Package\PostgresDB to SQL Server RAW\ODBC Source.Outputs[ODBC Source Output].ExternalColumns[map]"
+                      lineageId="Package\PostgresDB to SQL Server RAW\ODBC Source.Outputs[ODBC Source Output].Columns[map]"
+                      name="map" />
+                    <outputColumn
+                      refId="Package\PostgresDB to SQL Server RAW\ODBC Source.Outputs[ODBC Source Output].Columns[max_speed]"
+                      dataType="numeric"
+                      externalMetadataColumnId="Package\PostgresDB to SQL Server RAW\ODBC Source.Outputs[ODBC Source Output].ExternalColumns[max_speed]"
+                      lineageId="Package\PostgresDB to SQL Server RAW\ODBC Source.Outputs[ODBC Source Output].Columns[max_speed]"
+                      name="max_speed"
+                      precision="28"
+                      scale="6" />
+                    <outputColumn
+                      refId="Package\PostgresDB to SQL Server RAW\ODBC Source.Outputs[ODBC Source Output].Columns[max_watts]"
+                      dataType="numeric"
+                      externalMetadataColumnId="Package\PostgresDB to SQL Server RAW\ODBC Source.Outputs[ODBC Source Output].ExternalColumns[max_watts]"
+                      lineageId="Package\PostgresDB to SQL Server RAW\ODBC Source.Outputs[ODBC Source Output].Columns[max_watts]"
+                      name="max_watts"
+                      precision="28"
+                      scale="6" />
+                    <outputColumn
+                      refId="Package\PostgresDB to SQL Server RAW\ODBC Source.Outputs[ODBC Source Output].Columns[moving_time]"
+                      dataType="i8"
+                      externalMetadataColumnId="Package\PostgresDB to SQL Server RAW\ODBC Source.Outputs[ODBC Source Output].ExternalColumns[moving_time]"
+                      lineageId="Package\PostgresDB to SQL Server RAW\ODBC Source.Outputs[ODBC Source Output].Columns[moving_time]"
+                      name="moving_time" />
+                    <outputColumn
+                      refId="Package\PostgresDB to SQL Server RAW\ODBC Source.Outputs[ODBC Source Output].Columns[photo_count]"
+                      dataType="i8"
+                      externalMetadataColumnId="Package\PostgresDB to SQL Server RAW\ODBC Source.Outputs[ODBC Source Output].ExternalColumns[photo_count]"
+                      lineageId="Package\PostgresDB to SQL Server RAW\ODBC Source.Outputs[ODBC Source Output].Columns[photo_count]"
+                      name="photo_count" />
+                    <outputColumn
+                      refId="Package\PostgresDB to SQL Server RAW\ODBC Source.Outputs[ODBC Source Output].Columns[private]"
+                      codePage="1252"
+                      dataType="str"
+                      externalMetadataColumnId="Package\PostgresDB to SQL Server RAW\ODBC Source.Outputs[ODBC Source Output].ExternalColumns[private]"
+                      length="5"
+                      lineageId="Package\PostgresDB to SQL Server RAW\ODBC Source.Outputs[ODBC Source Output].Columns[private]"
+                      name="private" />
+                    <outputColumn
+                      refId="Package\PostgresDB to SQL Server RAW\ODBC Source.Outputs[ODBC Source Output].Columns[start_date]"
+                      dataType="dbTimeStamp2"
+                      externalMetadataColumnId="Package\PostgresDB to SQL Server RAW\ODBC Source.Outputs[ODBC Source Output].ExternalColumns[start_date]"
+                      lineageId="Package\PostgresDB to SQL Server RAW\ODBC Source.Outputs[ODBC Source Output].Columns[start_date]"
+                      name="start_date"
+                      scale="6" />
+                    <outputColumn
+                      refId="Package\PostgresDB to SQL Server RAW\ODBC Source.Outputs[ODBC Source Output].Columns[start_date_local]"
+                      dataType="dbTimeStamp2"
+                      externalMetadataColumnId="Package\PostgresDB to SQL Server RAW\ODBC Source.Outputs[ODBC Source Output].ExternalColumns[start_date_local]"
+                      lineageId="Package\PostgresDB to SQL Server RAW\ODBC Source.Outputs[ODBC Source Output].Columns[start_date_local]"
+                      name="start_date_local"
+                      scale="6" />
+                    <outputColumn
+                      refId="Package\PostgresDB to SQL Server RAW\ODBC Source.Outputs[ODBC Source Output].Columns[start_latlng]"
+                      dataType="nText"
+                      externalMetadataColumnId="Package\PostgresDB to SQL Server RAW\ODBC Source.Outputs[ODBC Source Output].ExternalColumns[start_latlng]"
+                      lineageId="Package\PostgresDB to SQL Server RAW\ODBC Source.Outputs[ODBC Source Output].Columns[start_latlng]"
+                      name="start_latlng" />
+                    <outputColumn
+                      refId="Package\PostgresDB to SQL Server RAW\ODBC Source.Outputs[ODBC Source Output].Columns[swagger_types]"
+                      dataType="nText"
+                      externalMetadataColumnId="Package\PostgresDB to SQL Server RAW\ODBC Source.Outputs[ODBC Source Output].ExternalColumns[swagger_types]"
+                      lineageId="Package\PostgresDB to SQL Server RAW\ODBC Source.Outputs[ODBC Source Output].Columns[swagger_types]"
+                      name="swagger_types" />
+                    <outputColumn
+                      refId="Package\PostgresDB to SQL Server RAW\ODBC Source.Outputs[ODBC Source Output].Columns[timezone]"
+                      dataType="nText"
+                      externalMetadataColumnId="Package\PostgresDB to SQL Server RAW\ODBC Source.Outputs[ODBC Source Output].ExternalColumns[timezone]"
+                      lineageId="Package\PostgresDB to SQL Server RAW\ODBC Source.Outputs[ODBC Source Output].Columns[timezone]"
+                      name="timezone" />
+                    <outputColumn
+                      refId="Package\PostgresDB to SQL Server RAW\ODBC Source.Outputs[ODBC Source Output].Columns[total_elevation_gain]"
+                      dataType="numeric"
+                      externalMetadataColumnId="Package\PostgresDB to SQL Server RAW\ODBC Source.Outputs[ODBC Source Output].ExternalColumns[total_elevation_gain]"
+                      lineageId="Package\PostgresDB to SQL Server RAW\ODBC Source.Outputs[ODBC Source Output].Columns[total_elevation_gain]"
+                      name="total_elevation_gain"
+                      precision="28"
+                      scale="6" />
+                    <outputColumn
+                      refId="Package\PostgresDB to SQL Server RAW\ODBC Source.Outputs[ODBC Source Output].Columns[total_photo_count]"
+                      dataType="i8"
+                      externalMetadataColumnId="Package\PostgresDB to SQL Server RAW\ODBC Source.Outputs[ODBC Source Output].ExternalColumns[total_photo_count]"
+                      lineageId="Package\PostgresDB to SQL Server RAW\ODBC Source.Outputs[ODBC Source Output].Columns[total_photo_count]"
+                      name="total_photo_count" />
+                    <outputColumn
+                      refId="Package\PostgresDB to SQL Server RAW\ODBC Source.Outputs[ODBC Source Output].Columns[trainer]"
+                      codePage="1252"
+                      dataType="str"
+                      externalMetadataColumnId="Package\PostgresDB to SQL Server RAW\ODBC Source.Outputs[ODBC Source Output].ExternalColumns[trainer]"
+                      length="5"
+                      lineageId="Package\PostgresDB to SQL Server RAW\ODBC Source.Outputs[ODBC Source Output].Columns[trainer]"
+                      name="trainer" />
+                    <outputColumn
+                      refId="Package\PostgresDB to SQL Server RAW\ODBC Source.Outputs[ODBC Source Output].Columns[type]"
+                      dataType="nText"
+                      externalMetadataColumnId="Package\PostgresDB to SQL Server RAW\ODBC Source.Outputs[ODBC Source Output].ExternalColumns[type]"
+                      lineageId="Package\PostgresDB to SQL Server RAW\ODBC Source.Outputs[ODBC Source Output].Columns[type]"
+                      name="type" />
+                    <outputColumn
+                      refId="Package\PostgresDB to SQL Server RAW\ODBC Source.Outputs[ODBC Source Output].Columns[upload_id]"
+                      dataType="i8"
+                      externalMetadataColumnId="Package\PostgresDB to SQL Server RAW\ODBC Source.Outputs[ODBC Source Output].ExternalColumns[upload_id]"
+                      lineageId="Package\PostgresDB to SQL Server RAW\ODBC Source.Outputs[ODBC Source Output].Columns[upload_id]"
+                      name="upload_id" />
+                    <outputColumn
+                      refId="Package\PostgresDB to SQL Server RAW\ODBC Source.Outputs[ODBC Source Output].Columns[weighted_average_watts]"
+                      dataType="numeric"
+                      externalMetadataColumnId="Package\PostgresDB to SQL Server RAW\ODBC Source.Outputs[ODBC Source Output].ExternalColumns[weighted_average_watts]"
+                      lineageId="Package\PostgresDB to SQL Server RAW\ODBC Source.Outputs[ODBC Source Output].Columns[weighted_average_watts]"
+                      name="weighted_average_watts"
+                      precision="28"
+                      scale="6" />
+                    <outputColumn
+                      refId="Package\PostgresDB to SQL Server RAW\ODBC Source.Outputs[ODBC Source Output].Columns[workout_type]"
+                      dataType="numeric"
+                      externalMetadataColumnId="Package\PostgresDB to SQL Server RAW\ODBC Source.Outputs[ODBC Source Output].ExternalColumns[workout_type]"
+                      lineageId="Package\PostgresDB to SQL Server RAW\ODBC Source.Outputs[ODBC Source Output].Columns[workout_type]"
+                      name="workout_type"
+                      precision="28"
+                      scale="6" />
+                  </outputColumns>
+                  <externalMetadataColumns
+                    isUsed="True">
+                    <externalMetadataColumn
+                      refId="Package\PostgresDB to SQL Server RAW\ODBC Source.Outputs[ODBC Source Output].ExternalColumns[db_id]"
+                      dataType="i4"
+                      name="db_id" />
+                    <externalMetadataColumn
+                      refId="Package\PostgresDB to SQL Server RAW\ODBC Source.Outputs[ODBC Source Output].ExternalColumns[isprocessed]"
+                      codePage="1252"
+                      dataType="str"
+                      length="5"
+                      name="isprocessed" />
+                    <externalMetadataColumn
+                      refId="Package\PostgresDB to SQL Server RAW\ODBC Source.Outputs[ODBC Source Output].ExternalColumns[name]"
+                      dataType="nText"
+                      name="name" />
+                    <externalMetadataColumn
+                      refId="Package\PostgresDB to SQL Server RAW\ODBC Source.Outputs[ODBC Source Output].ExternalColumns[achievement_count]"
+                      dataType="i8"
+                      name="achievement_count" />
+                    <externalMetadataColumn
+                      refId="Package\PostgresDB to SQL Server RAW\ODBC Source.Outputs[ODBC Source Output].ExternalColumns[athlete]"
+                      dataType="nText"
+                      name="athlete" />
+                    <externalMetadataColumn
+                      refId="Package\PostgresDB to SQL Server RAW\ODBC Source.Outputs[ODBC Source Output].ExternalColumns[athlete_count]"
+                      dataType="i8"
+                      name="athlete_count" />
+                    <externalMetadataColumn
+                      refId="Package\PostgresDB to SQL Server RAW\ODBC Source.Outputs[ODBC Source Output].ExternalColumns[attribute_map]"
+                      dataType="nText"
+                      name="attribute_map" />
+                    <externalMetadataColumn
+                      refId="Package\PostgresDB to SQL Server RAW\ODBC Source.Outputs[ODBC Source Output].ExternalColumns[average_speed]"
+                      dataType="numeric"
+                      name="average_speed"
+                      precision="28"
+                      scale="6" />
+                    <externalMetadataColumn
+                      refId="Package\PostgresDB to SQL Server RAW\ODBC Source.Outputs[ODBC Source Output].ExternalColumns[average_watts]"
+                      dataType="numeric"
+                      name="average_watts"
+                      precision="28"
+                      scale="6" />
+                    <externalMetadataColumn
+                      refId="Package\PostgresDB to SQL Server RAW\ODBC Source.Outputs[ODBC Source Output].ExternalColumns[comment_count]"
+                      dataType="i8"
+                      name="comment_count" />
+                    <externalMetadataColumn
+                      refId="Package\PostgresDB to SQL Server RAW\ODBC Source.Outputs[ODBC Source Output].ExternalColumns[commute]"
+                      codePage="1252"
+                      dataType="str"
+                      length="5"
+                      name="commute" />
+                    <externalMetadataColumn
+                      refId="Package\PostgresDB to SQL Server RAW\ODBC Source.Outputs[ODBC Source Output].ExternalColumns[device_watts]"
+                      dataType="nText"
+                      name="device_watts" />
+                    <externalMetadataColumn
+                      refId="Package\PostgresDB to SQL Server RAW\ODBC Source.Outputs[ODBC Source Output].ExternalColumns[discriminator]"
+                      dataType="nText"
+                      name="discriminator" />
+                    <externalMetadataColumn
+                      refId="Package\PostgresDB to SQL Server RAW\ODBC Source.Outputs[ODBC Source Output].ExternalColumns[distance]"
+                      dataType="numeric"
+                      name="distance"
+                      precision="28"
+                      scale="6" />
+                    <externalMetadataColumn
+                      refId="Package\PostgresDB to SQL Server RAW\ODBC Source.Outputs[ODBC Source Output].ExternalColumns[elapsed_time]"
+                      dataType="i8"
+                      name="elapsed_time" />
+                    <externalMetadataColumn
+                      refId="Package\PostgresDB to SQL Server RAW\ODBC Source.Outputs[ODBC Source Output].ExternalColumns[elev_high]"
+                      dataType="numeric"
+                      name="elev_high"
+                      precision="28"
+                      scale="6" />
+                    <externalMetadataColumn
+                      refId="Package\PostgresDB to SQL Server RAW\ODBC Source.Outputs[ODBC Source Output].ExternalColumns[elev_low]"
+                      dataType="numeric"
+                      name="elev_low"
+                      precision="28"
+                      scale="6" />
+                    <externalMetadataColumn
+                      refId="Package\PostgresDB to SQL Server RAW\ODBC Source.Outputs[ODBC Source Output].ExternalColumns[end_latlng]"
+                      dataType="nText"
+                      name="end_latlng" />
+                    <externalMetadataColumn
+                      refId="Package\PostgresDB to SQL Server RAW\ODBC Source.Outputs[ODBC Source Output].ExternalColumns[external_id]"
+                      dataType="nText"
+                      name="external_id" />
+                    <externalMetadataColumn
+                      refId="Package\PostgresDB to SQL Server RAW\ODBC Source.Outputs[ODBC Source Output].ExternalColumns[flagged]"
+                      codePage="1252"
+                      dataType="str"
+                      length="5"
+                      name="flagged" />
+                    <externalMetadataColumn
+                      refId="Package\PostgresDB to SQL Server RAW\ODBC Source.Outputs[ODBC Source Output].ExternalColumns[gear_id]"
+                      dataType="nText"
+                      name="gear_id" />
+                    <externalMetadataColumn
+                      refId="Package\PostgresDB to SQL Server RAW\ODBC Source.Outputs[ODBC Source Output].ExternalColumns[has_kudoed]"
+                      codePage="1252"
+                      dataType="str"
+                      length="5"
+                      name="has_kudoed" />
+                    <externalMetadataColumn
+                      refId="Package\PostgresDB to SQL Server RAW\ODBC Source.Outputs[ODBC Source Output].ExternalColumns[id]"
+                      dataType="i8"
+                      name="id" />
+                    <externalMetadataColumn
+                      refId="Package\PostgresDB to SQL Server RAW\ODBC Source.Outputs[ODBC Source Output].ExternalColumns[kilojoules]"
+                      dataType="numeric"
+                      name="kilojoules"
+                      precision="28"
+                      scale="6" />
+                    <externalMetadataColumn
+                      refId="Package\PostgresDB to SQL Server RAW\ODBC Source.Outputs[ODBC Source Output].ExternalColumns[kudos_count]"
+                      dataType="i8"
+                      name="kudos_count" />
+                    <externalMetadataColumn
+                      refId="Package\PostgresDB to SQL Server RAW\ODBC Source.Outputs[ODBC Source Output].ExternalColumns[manual]"
+                      codePage="1252"
+                      dataType="str"
+                      length="5"
+                      name="manual" />
+                    <externalMetadataColumn
+                      refId="Package\PostgresDB to SQL Server RAW\ODBC Source.Outputs[ODBC Source Output].ExternalColumns[map]"
+                      dataType="nText"
+                      name="map" />
+                    <externalMetadataColumn
+                      refId="Package\PostgresDB to SQL Server RAW\ODBC Source.Outputs[ODBC Source Output].ExternalColumns[max_speed]"
+                      dataType="numeric"
+                      name="max_speed"
+                      precision="28"
+                      scale="6" />
+                    <externalMetadataColumn
+                      refId="Package\PostgresDB to SQL Server RAW\ODBC Source.Outputs[ODBC Source Output].ExternalColumns[max_watts]"
+                      dataType="numeric"
+                      name="max_watts"
+                      precision="28"
+                      scale="6" />
+                    <externalMetadataColumn
+                      refId="Package\PostgresDB to SQL Server RAW\ODBC Source.Outputs[ODBC Source Output].ExternalColumns[moving_time]"
+                      dataType="i8"
+                      name="moving_time" />
+                    <externalMetadataColumn
+                      refId="Package\PostgresDB to SQL Server RAW\ODBC Source.Outputs[ODBC Source Output].ExternalColumns[photo_count]"
+                      dataType="i8"
+                      name="photo_count" />
+                    <externalMetadataColumn
+                      refId="Package\PostgresDB to SQL Server RAW\ODBC Source.Outputs[ODBC Source Output].ExternalColumns[private]"
+                      codePage="1252"
+                      dataType="str"
+                      length="5"
+                      name="private" />
+                    <externalMetadataColumn
+                      refId="Package\PostgresDB to SQL Server RAW\ODBC Source.Outputs[ODBC Source Output].ExternalColumns[start_date]"
+                      dataType="dbTimeStamp2"
+                      name="start_date"
+                      scale="6" />
+                    <externalMetadataColumn
+                      refId="Package\PostgresDB to SQL Server RAW\ODBC Source.Outputs[ODBC Source Output].ExternalColumns[start_date_local]"
+                      dataType="dbTimeStamp2"
+                      name="start_date_local"
+                      scale="6" />
+                    <externalMetadataColumn
+                      refId="Package\PostgresDB to SQL Server RAW\ODBC Source.Outputs[ODBC Source Output].ExternalColumns[start_latlng]"
+                      dataType="nText"
+                      name="start_latlng" />
+                    <externalMetadataColumn
+                      refId="Package\PostgresDB to SQL Server RAW\ODBC Source.Outputs[ODBC Source Output].ExternalColumns[swagger_types]"
+                      dataType="nText"
+                      name="swagger_types" />
+                    <externalMetadataColumn
+                      refId="Package\PostgresDB to SQL Server RAW\ODBC Source.Outputs[ODBC Source Output].ExternalColumns[timezone]"
+                      dataType="nText"
+                      name="timezone" />
+                    <externalMetadataColumn
+                      refId="Package\PostgresDB to SQL Server RAW\ODBC Source.Outputs[ODBC Source Output].ExternalColumns[total_elevation_gain]"
+                      dataType="numeric"
+                      name="total_elevation_gain"
+                      precision="28"
+                      scale="6" />
+                    <externalMetadataColumn
+                      refId="Package\PostgresDB to SQL Server RAW\ODBC Source.Outputs[ODBC Source Output].ExternalColumns[total_photo_count]"
+                      dataType="i8"
+                      name="total_photo_count" />
+                    <externalMetadataColumn
+                      refId="Package\PostgresDB to SQL Server RAW\ODBC Source.Outputs[ODBC Source Output].ExternalColumns[trainer]"
+                      codePage="1252"
+                      dataType="str"
+                      length="5"
+                      name="trainer" />
+                    <externalMetadataColumn
+                      refId="Package\PostgresDB to SQL Server RAW\ODBC Source.Outputs[ODBC Source Output].ExternalColumns[type]"
+                      dataType="nText"
+                      name="type" />
+                    <externalMetadataColumn
+                      refId="Package\PostgresDB to SQL Server RAW\ODBC Source.Outputs[ODBC Source Output].ExternalColumns[upload_id]"
+                      dataType="i8"
+                      name="upload_id" />
+                    <externalMetadataColumn
+                      refId="Package\PostgresDB to SQL Server RAW\ODBC Source.Outputs[ODBC Source Output].ExternalColumns[weighted_average_watts]"
+                      dataType="numeric"
+                      name="weighted_average_watts"
+                      precision="28"
+                      scale="6" />
+                    <externalMetadataColumn
+                      refId="Package\PostgresDB to SQL Server RAW\ODBC Source.Outputs[ODBC Source Output].ExternalColumns[workout_type]"
+                      dataType="numeric"
+                      name="workout_type"
+                      precision="28"
+                      scale="6" />
+                  </externalMetadataColumns>
+                </output>
+                <output
+                  refId="Package\PostgresDB to SQL Server RAW\ODBC Source.Outputs[ODBC Source Error Output]"
+                  isErrorOut="true"
+                  name="ODBC Source Error Output">
+                  <outputColumns>
+                    <outputColumn
+                      refId="Package\PostgresDB to SQL Server RAW\ODBC Source.Outputs[ODBC Source Error Output].Columns[db_id]"
+                      dataType="i4"
+                      externalMetadataColumnId="Package\PostgresDB to SQL Server RAW\ODBC Source.Outputs[ODBC Source Output].ExternalColumns[db_id]"
+                      lineageId="Package\PostgresDB to SQL Server RAW\ODBC Source.Outputs[ODBC Source Error Output].Columns[db_id]"
+                      name="db_id" />
+                    <outputColumn
+                      refId="Package\PostgresDB to SQL Server RAW\ODBC Source.Outputs[ODBC Source Error Output].Columns[name]"
+                      dataType="nText"
+                      externalMetadataColumnId="Package\PostgresDB to SQL Server RAW\ODBC Source.Outputs[ODBC Source Output].ExternalColumns[name]"
+                      lineageId="Package\PostgresDB to SQL Server RAW\ODBC Source.Outputs[ODBC Source Error Output].Columns[name]"
+                      name="name" />
+                    <outputColumn
+                      refId="Package\PostgresDB to SQL Server RAW\ODBC Source.Outputs[ODBC Source Error Output].Columns[ErrorCode]"
+                      dataType="i4"
+                      lineageId="Package\PostgresDB to SQL Server RAW\ODBC Source.Outputs[ODBC Source Error Output].Columns[ErrorCode]"
+                      name="ErrorCode"
+                      specialFlags="1" />
+                    <outputColumn
+                      refId="Package\PostgresDB to SQL Server RAW\ODBC Source.Outputs[ODBC Source Error Output].Columns[achievement_count]"
+                      dataType="i8"
+                      externalMetadataColumnId="Package\PostgresDB to SQL Server RAW\ODBC Source.Outputs[ODBC Source Output].ExternalColumns[achievement_count]"
+                      lineageId="Package\PostgresDB to SQL Server RAW\ODBC Source.Outputs[ODBC Source Error Output].Columns[achievement_count]"
+                      name="achievement_count" />
+                    <outputColumn
+                      refId="Package\PostgresDB to SQL Server RAW\ODBC Source.Outputs[ODBC Source Error Output].Columns[athlete]"
+                      dataType="nText"
+                      externalMetadataColumnId="Package\PostgresDB to SQL Server RAW\ODBC Source.Outputs[ODBC Source Output].ExternalColumns[athlete]"
+                      lineageId="Package\PostgresDB to SQL Server RAW\ODBC Source.Outputs[ODBC Source Error Output].Columns[athlete]"
+                      name="athlete" />
+                    <outputColumn
+                      refId="Package\PostgresDB to SQL Server RAW\ODBC Source.Outputs[ODBC Source Error Output].Columns[athlete_count]"
+                      dataType="i8"
+                      externalMetadataColumnId="Package\PostgresDB to SQL Server RAW\ODBC Source.Outputs[ODBC Source Output].ExternalColumns[athlete_count]"
+                      lineageId="Package\PostgresDB to SQL Server RAW\ODBC Source.Outputs[ODBC Source Error Output].Columns[athlete_count]"
+                      name="athlete_count" />
+                    <outputColumn
+                      refId="Package\PostgresDB to SQL Server RAW\ODBC Source.Outputs[ODBC Source Error Output].Columns[attribute_map]"
+                      dataType="nText"
+                      externalMetadataColumnId="Package\PostgresDB to SQL Server RAW\ODBC Source.Outputs[ODBC Source Output].ExternalColumns[attribute_map]"
+                      lineageId="Package\PostgresDB to SQL Server RAW\ODBC Source.Outputs[ODBC Source Error Output].Columns[attribute_map]"
+                      name="attribute_map" />
+                    <outputColumn
+                      refId="Package\PostgresDB to SQL Server RAW\ODBC Source.Outputs[ODBC Source Error Output].Columns[average_speed]"
+                      dataType="numeric"
+                      externalMetadataColumnId="Package\PostgresDB to SQL Server RAW\ODBC Source.Outputs[ODBC Source Output].ExternalColumns[average_speed]"
+                      lineageId="Package\PostgresDB to SQL Server RAW\ODBC Source.Outputs[ODBC Source Error Output].Columns[average_speed]"
+                      name="average_speed"
+                      precision="28"
+                      scale="6" />
+                    <outputColumn
+                      refId="Package\PostgresDB to SQL Server RAW\ODBC Source.Outputs[ODBC Source Error Output].Columns[average_watts]"
+                      dataType="numeric"
+                      externalMetadataColumnId="Package\PostgresDB to SQL Server RAW\ODBC Source.Outputs[ODBC Source Output].ExternalColumns[average_watts]"
+                      lineageId="Package\PostgresDB to SQL Server RAW\ODBC Source.Outputs[ODBC Source Error Output].Columns[average_watts]"
+                      name="average_watts"
+                      precision="28"
+                      scale="6" />
+                    <outputColumn
+                      refId="Package\PostgresDB to SQL Server RAW\ODBC Source.Outputs[ODBC Source Error Output].Columns[comment_count]"
+                      dataType="i8"
+                      externalMetadataColumnId="Package\PostgresDB to SQL Server RAW\ODBC Source.Outputs[ODBC Source Output].ExternalColumns[comment_count]"
+                      lineageId="Package\PostgresDB to SQL Server RAW\ODBC Source.Outputs[ODBC Source Error Output].Columns[comment_count]"
+                      name="comment_count" />
+                    <outputColumn
+                      refId="Package\PostgresDB to SQL Server RAW\ODBC Source.Outputs[ODBC Source Error Output].Columns[commute]"
+                      codePage="1252"
+                      dataType="str"
+                      externalMetadataColumnId="Package\PostgresDB to SQL Server RAW\ODBC Source.Outputs[ODBC Source Output].ExternalColumns[commute]"
+                      length="5"
+                      lineageId="Package\PostgresDB to SQL Server RAW\ODBC Source.Outputs[ODBC Source Error Output].Columns[commute]"
+                      name="commute" />
+                    <outputColumn
+                      refId="Package\PostgresDB to SQL Server RAW\ODBC Source.Outputs[ODBC Source Error Output].Columns[device_watts]"
+                      dataType="nText"
+                      externalMetadataColumnId="Package\PostgresDB to SQL Server RAW\ODBC Source.Outputs[ODBC Source Output].ExternalColumns[device_watts]"
+                      lineageId="Package\PostgresDB to SQL Server RAW\ODBC Source.Outputs[ODBC Source Error Output].Columns[device_watts]"
+                      name="device_watts" />
+                    <outputColumn
+                      refId="Package\PostgresDB to SQL Server RAW\ODBC Source.Outputs[ODBC Source Error Output].Columns[discriminator]"
+                      dataType="nText"
+                      externalMetadataColumnId="Package\PostgresDB to SQL Server RAW\ODBC Source.Outputs[ODBC Source Output].ExternalColumns[discriminator]"
+                      lineageId="Package\PostgresDB to SQL Server RAW\ODBC Source.Outputs[ODBC Source Error Output].Columns[discriminator]"
+                      name="discriminator" />
+                    <outputColumn
+                      refId="Package\PostgresDB to SQL Server RAW\ODBC Source.Outputs[ODBC Source Error Output].Columns[distance]"
+                      dataType="numeric"
+                      externalMetadataColumnId="Package\PostgresDB to SQL Server RAW\ODBC Source.Outputs[ODBC Source Output].ExternalColumns[distance]"
+                      lineageId="Package\PostgresDB to SQL Server RAW\ODBC Source.Outputs[ODBC Source Error Output].Columns[distance]"
+                      name="distance"
+                      precision="28"
+                      scale="6" />
+                    <outputColumn
+                      refId="Package\PostgresDB to SQL Server RAW\ODBC Source.Outputs[ODBC Source Error Output].Columns[elapsed_time]"
+                      dataType="i8"
+                      externalMetadataColumnId="Package\PostgresDB to SQL Server RAW\ODBC Source.Outputs[ODBC Source Output].ExternalColumns[elapsed_time]"
+                      lineageId="Package\PostgresDB to SQL Server RAW\ODBC Source.Outputs[ODBC Source Error Output].Columns[elapsed_time]"
+                      name="elapsed_time" />
+                    <outputColumn
+                      refId="Package\PostgresDB to SQL Server RAW\ODBC Source.Outputs[ODBC Source Error Output].Columns[elev_high]"
+                      dataType="numeric"
+                      externalMetadataColumnId="Package\PostgresDB to SQL Server RAW\ODBC Source.Outputs[ODBC Source Output].ExternalColumns[elev_high]"
+                      lineageId="Package\PostgresDB to SQL Server RAW\ODBC Source.Outputs[ODBC Source Error Output].Columns[elev_high]"
+                      name="elev_high"
+                      precision="28"
+                      scale="6" />
+                    <outputColumn
+                      refId="Package\PostgresDB to SQL Server RAW\ODBC Source.Outputs[ODBC Source Error Output].Columns[elev_low]"
+                      dataType="numeric"
+                      externalMetadataColumnId="Package\PostgresDB to SQL Server RAW\ODBC Source.Outputs[ODBC Source Output].ExternalColumns[elev_low]"
+                      lineageId="Package\PostgresDB to SQL Server RAW\ODBC Source.Outputs[ODBC Source Error Output].Columns[elev_low]"
+                      name="elev_low"
+                      precision="28"
+                      scale="6" />
+                    <outputColumn
+                      refId="Package\PostgresDB to SQL Server RAW\ODBC Source.Outputs[ODBC Source Error Output].Columns[end_latlng]"
+                      dataType="nText"
+                      externalMetadataColumnId="Package\PostgresDB to SQL Server RAW\ODBC Source.Outputs[ODBC Source Output].ExternalColumns[end_latlng]"
+                      lineageId="Package\PostgresDB to SQL Server RAW\ODBC Source.Outputs[ODBC Source Error Output].Columns[end_latlng]"
+                      name="end_latlng" />
+                    <outputColumn
+                      refId="Package\PostgresDB to SQL Server RAW\ODBC Source.Outputs[ODBC Source Error Output].Columns[external_id]"
+                      dataType="nText"
+                      externalMetadataColumnId="Package\PostgresDB to SQL Server RAW\ODBC Source.Outputs[ODBC Source Output].ExternalColumns[external_id]"
+                      lineageId="Package\PostgresDB to SQL Server RAW\ODBC Source.Outputs[ODBC Source Error Output].Columns[external_id]"
+                      name="external_id" />
+                    <outputColumn
+                      refId="Package\PostgresDB to SQL Server RAW\ODBC Source.Outputs[ODBC Source Error Output].Columns[flagged]"
+                      codePage="1252"
+                      dataType="str"
+                      externalMetadataColumnId="Package\PostgresDB to SQL Server RAW\ODBC Source.Outputs[ODBC Source Output].ExternalColumns[flagged]"
+                      length="5"
+                      lineageId="Package\PostgresDB to SQL Server RAW\ODBC Source.Outputs[ODBC Source Error Output].Columns[flagged]"
+                      name="flagged" />
+                    <outputColumn
+                      refId="Package\PostgresDB to SQL Server RAW\ODBC Source.Outputs[ODBC Source Error Output].Columns[gear_id]"
+                      dataType="nText"
+                      externalMetadataColumnId="Package\PostgresDB to SQL Server RAW\ODBC Source.Outputs[ODBC Source Output].ExternalColumns[gear_id]"
+                      lineageId="Package\PostgresDB to SQL Server RAW\ODBC Source.Outputs[ODBC Source Error Output].Columns[gear_id]"
+                      name="gear_id" />
+                    <outputColumn
+                      refId="Package\PostgresDB to SQL Server RAW\ODBC Source.Outputs[ODBC Source Error Output].Columns[has_kudoed]"
+                      codePage="1252"
+                      dataType="str"
+                      externalMetadataColumnId="Package\PostgresDB to SQL Server RAW\ODBC Source.Outputs[ODBC Source Output].ExternalColumns[has_kudoed]"
+                      length="5"
+                      lineageId="Package\PostgresDB to SQL Server RAW\ODBC Source.Outputs[ODBC Source Error Output].Columns[has_kudoed]"
+                      name="has_kudoed" />
+                    <outputColumn
+                      refId="Package\PostgresDB to SQL Server RAW\ODBC Source.Outputs[ODBC Source Error Output].Columns[id]"
+                      dataType="i8"
+                      externalMetadataColumnId="Package\PostgresDB to SQL Server RAW\ODBC Source.Outputs[ODBC Source Output].ExternalColumns[id]"
+                      lineageId="Package\PostgresDB to SQL Server RAW\ODBC Source.Outputs[ODBC Source Error Output].Columns[id]"
+                      name="id" />
+                    <outputColumn
+                      refId="Package\PostgresDB to SQL Server RAW\ODBC Source.Outputs[ODBC Source Error Output].Columns[kilojoules]"
+                      dataType="numeric"
+                      externalMetadataColumnId="Package\PostgresDB to SQL Server RAW\ODBC Source.Outputs[ODBC Source Output].ExternalColumns[kilojoules]"
+                      lineageId="Package\PostgresDB to SQL Server RAW\ODBC Source.Outputs[ODBC Source Error Output].Columns[kilojoules]"
+                      name="kilojoules"
+                      precision="28"
+                      scale="6" />
+                    <outputColumn
+                      refId="Package\PostgresDB to SQL Server RAW\ODBC Source.Outputs[ODBC Source Error Output].Columns[kudos_count]"
+                      dataType="i8"
+                      externalMetadataColumnId="Package\PostgresDB to SQL Server RAW\ODBC Source.Outputs[ODBC Source Output].ExternalColumns[kudos_count]"
+                      lineageId="Package\PostgresDB to SQL Server RAW\ODBC Source.Outputs[ODBC Source Error Output].Columns[kudos_count]"
+                      name="kudos_count" />
+                    <outputColumn
+                      refId="Package\PostgresDB to SQL Server RAW\ODBC Source.Outputs[ODBC Source Error Output].Columns[manual]"
+                      codePage="1252"
+                      dataType="str"
+                      externalMetadataColumnId="Package\PostgresDB to SQL Server RAW\ODBC Source.Outputs[ODBC Source Output].ExternalColumns[manual]"
+                      length="5"
+                      lineageId="Package\PostgresDB to SQL Server RAW\ODBC Source.Outputs[ODBC Source Error Output].Columns[manual]"
+                      name="manual" />
+                    <outputColumn
+                      refId="Package\PostgresDB to SQL Server RAW\ODBC Source.Outputs[ODBC Source Error Output].Columns[map]"
+                      dataType="nText"
+                      externalMetadataColumnId="Package\PostgresDB to SQL Server RAW\ODBC Source.Outputs[ODBC Source Output].ExternalColumns[map]"
+                      lineageId="Package\PostgresDB to SQL Server RAW\ODBC Source.Outputs[ODBC Source Error Output].Columns[map]"
+                      name="map" />
+                    <outputColumn
+                      refId="Package\PostgresDB to SQL Server RAW\ODBC Source.Outputs[ODBC Source Error Output].Columns[max_speed]"
+                      dataType="numeric"
+                      externalMetadataColumnId="Package\PostgresDB to SQL Server RAW\ODBC Source.Outputs[ODBC Source Output].ExternalColumns[max_speed]"
+                      lineageId="Package\PostgresDB to SQL Server RAW\ODBC Source.Outputs[ODBC Source Error Output].Columns[max_speed]"
+                      name="max_speed"
+                      precision="28"
+                      scale="6" />
+                    <outputColumn
+                      refId="Package\PostgresDB to SQL Server RAW\ODBC Source.Outputs[ODBC Source Error Output].Columns[max_watts]"
+                      dataType="numeric"
+                      externalMetadataColumnId="Package\PostgresDB to SQL Server RAW\ODBC Source.Outputs[ODBC Source Output].ExternalColumns[max_watts]"
+                      lineageId="Package\PostgresDB to SQL Server RAW\ODBC Source.Outputs[ODBC Source Error Output].Columns[max_watts]"
+                      name="max_watts"
+                      precision="28"
+                      scale="6" />
+                    <outputColumn
+                      refId="Package\PostgresDB to SQL Server RAW\ODBC Source.Outputs[ODBC Source Error Output].Columns[moving_time]"
+                      dataType="i8"
+                      externalMetadataColumnId="Package\PostgresDB to SQL Server RAW\ODBC Source.Outputs[ODBC Source Output].ExternalColumns[moving_time]"
+                      lineageId="Package\PostgresDB to SQL Server RAW\ODBC Source.Outputs[ODBC Source Error Output].Columns[moving_time]"
+                      name="moving_time" />
+                    <outputColumn
+                      refId="Package\PostgresDB to SQL Server RAW\ODBC Source.Outputs[ODBC Source Error Output].Columns[photo_count]"
+                      dataType="i8"
+                      externalMetadataColumnId="Package\PostgresDB to SQL Server RAW\ODBC Source.Outputs[ODBC Source Output].ExternalColumns[photo_count]"
+                      lineageId="Package\PostgresDB to SQL Server RAW\ODBC Source.Outputs[ODBC Source Error Output].Columns[photo_count]"
+                      name="photo_count" />
+                    <outputColumn
+                      refId="Package\PostgresDB to SQL Server RAW\ODBC Source.Outputs[ODBC Source Error Output].Columns[private]"
+                      codePage="1252"
+                      dataType="str"
+                      externalMetadataColumnId="Package\PostgresDB to SQL Server RAW\ODBC Source.Outputs[ODBC Source Output].ExternalColumns[private]"
+                      length="5"
+                      lineageId="Package\PostgresDB to SQL Server RAW\ODBC Source.Outputs[ODBC Source Error Output].Columns[private]"
+                      name="private" />
+                    <outputColumn
+                      refId="Package\PostgresDB to SQL Server RAW\ODBC Source.Outputs[ODBC Source Error Output].Columns[start_date]"
+                      dataType="dbTimeStamp2"
+                      externalMetadataColumnId="Package\PostgresDB to SQL Server RAW\ODBC Source.Outputs[ODBC Source Output].ExternalColumns[start_date]"
+                      lineageId="Package\PostgresDB to SQL Server RAW\ODBC Source.Outputs[ODBC Source Error Output].Columns[start_date]"
+                      name="start_date"
+                      scale="6" />
+                    <outputColumn
+                      refId="Package\PostgresDB to SQL Server RAW\ODBC Source.Outputs[ODBC Source Error Output].Columns[start_date_local]"
+                      dataType="dbTimeStamp2"
+                      externalMetadataColumnId="Package\PostgresDB to SQL Server RAW\ODBC Source.Outputs[ODBC Source Output].ExternalColumns[start_date_local]"
+                      lineageId="Package\PostgresDB to SQL Server RAW\ODBC Source.Outputs[ODBC Source Error Output].Columns[start_date_local]"
+                      name="start_date_local"
+                      scale="6" />
+                    <outputColumn
+                      refId="Package\PostgresDB to SQL Server RAW\ODBC Source.Outputs[ODBC Source Error Output].Columns[start_latlng]"
+                      dataType="nText"
+                      externalMetadataColumnId="Package\PostgresDB to SQL Server RAW\ODBC Source.Outputs[ODBC Source Output].ExternalColumns[start_latlng]"
+                      lineageId="Package\PostgresDB to SQL Server RAW\ODBC Source.Outputs[ODBC Source Error Output].Columns[start_latlng]"
+                      name="start_latlng" />
+                    <outputColumn
+                      refId="Package\PostgresDB to SQL Server RAW\ODBC Source.Outputs[ODBC Source Error Output].Columns[swagger_types]"
+                      dataType="nText"
+                      externalMetadataColumnId="Package\PostgresDB to SQL Server RAW\ODBC Source.Outputs[ODBC Source Output].ExternalColumns[swagger_types]"
+                      lineageId="Package\PostgresDB to SQL Server RAW\ODBC Source.Outputs[ODBC Source Error Output].Columns[swagger_types]"
+                      name="swagger_types" />
+                    <outputColumn
+                      refId="Package\PostgresDB to SQL Server RAW\ODBC Source.Outputs[ODBC Source Error Output].Columns[timezone]"
+                      dataType="nText"
+                      externalMetadataColumnId="Package\PostgresDB to SQL Server RAW\ODBC Source.Outputs[ODBC Source Output].ExternalColumns[timezone]"
+                      lineageId="Package\PostgresDB to SQL Server RAW\ODBC Source.Outputs[ODBC Source Error Output].Columns[timezone]"
+                      name="timezone" />
+                    <outputColumn
+                      refId="Package\PostgresDB to SQL Server RAW\ODBC Source.Outputs[ODBC Source Error Output].Columns[total_elevation_gain]"
+                      dataType="numeric"
+                      externalMetadataColumnId="Package\PostgresDB to SQL Server RAW\ODBC Source.Outputs[ODBC Source Output].ExternalColumns[total_elevation_gain]"
+                      lineageId="Package\PostgresDB to SQL Server RAW\ODBC Source.Outputs[ODBC Source Error Output].Columns[total_elevation_gain]"
+                      name="total_elevation_gain"
+                      precision="28"
+                      scale="6" />
+                    <outputColumn
+                      refId="Package\PostgresDB to SQL Server RAW\ODBC Source.Outputs[ODBC Source Error Output].Columns[total_photo_count]"
+                      dataType="i8"
+                      externalMetadataColumnId="Package\PostgresDB to SQL Server RAW\ODBC Source.Outputs[ODBC Source Output].ExternalColumns[total_photo_count]"
+                      lineageId="Package\PostgresDB to SQL Server RAW\ODBC Source.Outputs[ODBC Source Error Output].Columns[total_photo_count]"
+                      name="total_photo_count" />
+                    <outputColumn
+                      refId="Package\PostgresDB to SQL Server RAW\ODBC Source.Outputs[ODBC Source Error Output].Columns[trainer]"
+                      codePage="1252"
+                      dataType="str"
+                      externalMetadataColumnId="Package\PostgresDB to SQL Server RAW\ODBC Source.Outputs[ODBC Source Output].ExternalColumns[trainer]"
+                      length="5"
+                      lineageId="Package\PostgresDB to SQL Server RAW\ODBC Source.Outputs[ODBC Source Error Output].Columns[trainer]"
+                      name="trainer" />
+                    <outputColumn
+                      refId="Package\PostgresDB to SQL Server RAW\ODBC Source.Outputs[ODBC Source Error Output].Columns[type]"
+                      dataType="nText"
+                      externalMetadataColumnId="Package\PostgresDB to SQL Server RAW\ODBC Source.Outputs[ODBC Source Output].ExternalColumns[type]"
+                      lineageId="Package\PostgresDB to SQL Server RAW\ODBC Source.Outputs[ODBC Source Error Output].Columns[type]"
+                      name="type" />
+                    <outputColumn
+                      refId="Package\PostgresDB to SQL Server RAW\ODBC Source.Outputs[ODBC Source Error Output].Columns[upload_id]"
+                      dataType="i8"
+                      externalMetadataColumnId="Package\PostgresDB to SQL Server RAW\ODBC Source.Outputs[ODBC Source Output].ExternalColumns[upload_id]"
+                      lineageId="Package\PostgresDB to SQL Server RAW\ODBC Source.Outputs[ODBC Source Error Output].Columns[upload_id]"
+                      name="upload_id" />
+                    <outputColumn
+                      refId="Package\PostgresDB to SQL Server RAW\ODBC Source.Outputs[ODBC Source Error Output].Columns[weighted_average_watts]"
+                      dataType="numeric"
+                      externalMetadataColumnId="Package\PostgresDB to SQL Server RAW\ODBC Source.Outputs[ODBC Source Output].ExternalColumns[weighted_average_watts]"
+                      lineageId="Package\PostgresDB to SQL Server RAW\ODBC Source.Outputs[ODBC Source Error Output].Columns[weighted_average_watts]"
+                      name="weighted_average_watts"
+                      precision="28"
+                      scale="6" />
+                    <outputColumn
+                      refId="Package\PostgresDB to SQL Server RAW\ODBC Source.Outputs[ODBC Source Error Output].Columns[workout_type]"
+                      dataType="numeric"
+                      externalMetadataColumnId="Package\PostgresDB to SQL Server RAW\ODBC Source.Outputs[ODBC Source Output].ExternalColumns[workout_type]"
+                      lineageId="Package\PostgresDB to SQL Server RAW\ODBC Source.Outputs[ODBC Source Error Output].Columns[workout_type]"
+                      name="workout_type"
+                      precision="28"
+                      scale="6" />
+                    <outputColumn
+                      refId="Package\PostgresDB to SQL Server RAW\ODBC Source.Outputs[ODBC Source Error Output].Columns[ErrorColumn]"
+                      dataType="i4"
+                      lineageId="Package\PostgresDB to SQL Server RAW\ODBC Source.Outputs[ODBC Source Error Output].Columns[ErrorColumn]"
+                      name="ErrorColumn"
+                      specialFlags="2" />
+                    <outputColumn
+                      refId="Package\PostgresDB to SQL Server RAW\ODBC Source.Outputs[ODBC Source Error Output].Columns[isprocessed]"
+                      codePage="1252"
+                      dataType="str"
+                      length="5"
+                      lineageId="Package\PostgresDB to SQL Server RAW\ODBC Source.Outputs[ODBC Source Error Output].Columns[isprocessed]"
+                      name="isprocessed" />
+                  </outputColumns>
+                  <externalMetadataColumns />
+                </output>
+              </outputs>
+            </component>
+            <component
+              refId="Package\PostgresDB to SQL Server RAW\OLE DB Destination"
+              componentClassID="Microsoft.OLEDBDestination"
+              contactInfo="OLE DB Destination;Microsoft Corporation; Microsoft SQL Server; (C) Microsoft Corporation; All Rights Reserved; http://www.microsoft.com/sql/support;4"
+              description="OLE DB Destination"
+              name="OLE DB Destination"
+              usesDispositions="true"
+              version="4">
+              <properties>
+                <property
+                  dataType="System.Int32"
+                  description="The number of seconds before a command times out.  A value of 0 indicates an infinite time-out."
+                  name="CommandTimeout">0</property>
+                <property
+                  dataType="System.String"
+                  description="Specifies the name of the database object used to open a rowset."
+                  name="OpenRowset">[dbo].[activities]</property>
+                <property
+                  dataType="System.String"
+                  description="Specifies the variable that contains the name of the database object used to open a rowset."
+                  name="OpenRowsetVariable"></property>
+                <property
+                  dataType="System.String"
+                  description="The SQL command to be executed."
+                  name="SqlCommand"
+                  UITypeEditor="Microsoft.DataTransformationServices.Controls.ModalMultilineStringEditor"></property>
+                <property
+                  dataType="System.Int32"
+                  description="Specifies the column code page to use when code page information is unavailable from the data source."
+                  name="DefaultCodePage">1252</property>
+                <property
+                  dataType="System.Boolean"
+                  description="Forces the use of the DefaultCodePage property value when describing character data."
+                  name="AlwaysUseDefaultCodePage">false</property>
+                <property
+                  dataType="System.Int32"
+                  description="Specifies the mode used to access the database."
+                  name="AccessMode"
+                  typeConverter="AccessMode">3</property>
+                <property
+                  dataType="System.Boolean"
+                  description="Indicates whether the values supplied for identity columns will be copied to the destination. If false, values for identity columns will be auto-generated at the destination. Applies only if fast load is turned on."
+                  name="FastLoadKeepIdentity">false</property>
+                <property
+                  dataType="System.Boolean"
+                  description="Indicates whether the columns containing null will have null inserted in the destination. If false, columns containing null will have their default values inserted at the destination. Applies only if fast load is turned on."
+                  name="FastLoadKeepNulls">false</property>
+                <property
+                  dataType="System.String"
+                  description="Specifies options to be used with fast load.  Applies only if fast load is turned on."
+                  name="FastLoadOptions">TABLOCK</property>
+                <property
+                  dataType="System.Int32"
+                  description="Specifies when commits are issued during data insertion.  A value of 0 specifies that one commit will be issued at the end of data insertion.  Applies only if fast load is turned on."
+                  name="FastLoadMaxInsertCommitSize">2147483647</property>
+              </properties>
+              <connections>
+                <connection
+                  refId="Package\PostgresDB to SQL Server RAW\OLE DB Destination.Connections[OleDbConnection]"
+                  connectionManagerID="Package.ConnectionManagers[CycleStatsWarehouse_SqlServerDB]"
+                  connectionManagerRefId="Package.ConnectionManagers[CycleStatsWarehouse_SqlServerDB]"
+                  description="The OLE DB runtime connection used to access the database."
+                  name="OleDbConnection" />
+              </connections>
+              <inputs>
+                <input
+                  refId="Package\PostgresDB to SQL Server RAW\OLE DB Destination.Inputs[OLE DB Destination Input]"
+                  errorOrTruncationOperation="Insert"
+                  errorRowDisposition="FailComponent"
+                  hasSideEffects="true"
+                  name="OLE DB Destination Input">
+                  <inputColumns>
+                    <inputColumn
+                      refId="Package\PostgresDB to SQL Server RAW\OLE DB Destination.Inputs[OLE DB Destination Input].Columns[db_id]"
+                      cachedDataType="i4"
+                      cachedName="db_id"
+                      externalMetadataColumnId="Package\PostgresDB to SQL Server RAW\OLE DB Destination.Inputs[OLE DB Destination Input].ExternalColumns[db_id]"
+                      lineageId="Package\PostgresDB to SQL Server RAW\ODBC Source.Outputs[ODBC Source Output].Columns[db_id]" />
+                    <inputColumn
+                      refId="Package\PostgresDB to SQL Server RAW\OLE DB Destination.Inputs[OLE DB Destination Input].Columns[name]"
+                      cachedDataType="nText"
+                      cachedName="name"
+                      externalMetadataColumnId="Package\PostgresDB to SQL Server RAW\OLE DB Destination.Inputs[OLE DB Destination Input].ExternalColumns[name]"
+                      lineageId="Package\PostgresDB to SQL Server RAW\ODBC Source.Outputs[ODBC Source Output].Columns[name]" />
+                    <inputColumn
+                      refId="Package\PostgresDB to SQL Server RAW\OLE DB Destination.Inputs[OLE DB Destination Input].Columns[isprocessed]"
+                      cachedCodepage="1252"
+                      cachedDataType="str"
+                      cachedLength="5"
+                      cachedName="isprocessed"
+                      externalMetadataColumnId="Package\PostgresDB to SQL Server RAW\OLE DB Destination.Inputs[OLE DB Destination Input].ExternalColumns[isprocessed]"
+                      lineageId="Package\PostgresDB to SQL Server RAW\ODBC Source.Outputs[ODBC Source Output].Columns[isprocessed]" />
+                    <inputColumn
+                      refId="Package\PostgresDB to SQL Server RAW\OLE DB Destination.Inputs[OLE DB Destination Input].Columns[achievement_count]"
+                      cachedDataType="i8"
+                      cachedName="achievement_count"
+                      externalMetadataColumnId="Package\PostgresDB to SQL Server RAW\OLE DB Destination.Inputs[OLE DB Destination Input].ExternalColumns[achievement_count]"
+                      lineageId="Package\PostgresDB to SQL Server RAW\ODBC Source.Outputs[ODBC Source Output].Columns[achievement_count]" />
+                    <inputColumn
+                      refId="Package\PostgresDB to SQL Server RAW\OLE DB Destination.Inputs[OLE DB Destination Input].Columns[athlete]"
+                      cachedDataType="nText"
+                      cachedName="athlete"
+                      externalMetadataColumnId="Package\PostgresDB to SQL Server RAW\OLE DB Destination.Inputs[OLE DB Destination Input].ExternalColumns[athlete]"
+                      lineageId="Package\PostgresDB to SQL Server RAW\ODBC Source.Outputs[ODBC Source Output].Columns[athlete]" />
+                    <inputColumn
+                      refId="Package\PostgresDB to SQL Server RAW\OLE DB Destination.Inputs[OLE DB Destination Input].Columns[athlete_count]"
+                      cachedDataType="i8"
+                      cachedName="athlete_count"
+                      externalMetadataColumnId="Package\PostgresDB to SQL Server RAW\OLE DB Destination.Inputs[OLE DB Destination Input].ExternalColumns[athlete_count]"
+                      lineageId="Package\PostgresDB to SQL Server RAW\ODBC Source.Outputs[ODBC Source Output].Columns[athlete_count]" />
+                    <inputColumn
+                      refId="Package\PostgresDB to SQL Server RAW\OLE DB Destination.Inputs[OLE DB Destination Input].Columns[attribute_map]"
+                      cachedDataType="nText"
+                      cachedName="attribute_map"
+                      externalMetadataColumnId="Package\PostgresDB to SQL Server RAW\OLE DB Destination.Inputs[OLE DB Destination Input].ExternalColumns[attribute_map]"
+                      lineageId="Package\PostgresDB to SQL Server RAW\ODBC Source.Outputs[ODBC Source Output].Columns[attribute_map]" />
+                    <inputColumn
+                      refId="Package\PostgresDB to SQL Server RAW\OLE DB Destination.Inputs[OLE DB Destination Input].Columns[average_speed]"
+                      cachedDataType="numeric"
+                      cachedName="average_speed"
+                      cachedPrecision="28"
+                      cachedScale="6"
+                      externalMetadataColumnId="Package\PostgresDB to SQL Server RAW\OLE DB Destination.Inputs[OLE DB Destination Input].ExternalColumns[average_speed]"
+                      lineageId="Package\PostgresDB to SQL Server RAW\ODBC Source.Outputs[ODBC Source Output].Columns[average_speed]" />
+                    <inputColumn
+                      refId="Package\PostgresDB to SQL Server RAW\OLE DB Destination.Inputs[OLE DB Destination Input].Columns[average_watts]"
+                      cachedDataType="numeric"
+                      cachedName="average_watts"
+                      cachedPrecision="28"
+                      cachedScale="6"
+                      externalMetadataColumnId="Package\PostgresDB to SQL Server RAW\OLE DB Destination.Inputs[OLE DB Destination Input].ExternalColumns[average_watts]"
+                      lineageId="Package\PostgresDB to SQL Server RAW\ODBC Source.Outputs[ODBC Source Output].Columns[average_watts]" />
+                    <inputColumn
+                      refId="Package\PostgresDB to SQL Server RAW\OLE DB Destination.Inputs[OLE DB Destination Input].Columns[comment_count]"
+                      cachedDataType="i8"
+                      cachedName="comment_count"
+                      externalMetadataColumnId="Package\PostgresDB to SQL Server RAW\OLE DB Destination.Inputs[OLE DB Destination Input].ExternalColumns[comment_count]"
+                      lineageId="Package\PostgresDB to SQL Server RAW\ODBC Source.Outputs[ODBC Source Output].Columns[comment_count]" />
+                    <inputColumn
+                      refId="Package\PostgresDB to SQL Server RAW\OLE DB Destination.Inputs[OLE DB Destination Input].Columns[commute]"
+                      cachedCodepage="1252"
+                      cachedDataType="str"
+                      cachedLength="5"
+                      cachedName="commute"
+                      externalMetadataColumnId="Package\PostgresDB to SQL Server RAW\OLE DB Destination.Inputs[OLE DB Destination Input].ExternalColumns[commute]"
+                      lineageId="Package\PostgresDB to SQL Server RAW\ODBC Source.Outputs[ODBC Source Output].Columns[commute]" />
+                    <inputColumn
+                      refId="Package\PostgresDB to SQL Server RAW\OLE DB Destination.Inputs[OLE DB Destination Input].Columns[device_watts]"
+                      cachedDataType="nText"
+                      cachedName="device_watts"
+                      externalMetadataColumnId="Package\PostgresDB to SQL Server RAW\OLE DB Destination.Inputs[OLE DB Destination Input].ExternalColumns[device_watts]"
+                      lineageId="Package\PostgresDB to SQL Server RAW\ODBC Source.Outputs[ODBC Source Output].Columns[device_watts]" />
+                    <inputColumn
+                      refId="Package\PostgresDB to SQL Server RAW\OLE DB Destination.Inputs[OLE DB Destination Input].Columns[discriminator]"
+                      cachedDataType="nText"
+                      cachedName="discriminator"
+                      externalMetadataColumnId="Package\PostgresDB to SQL Server RAW\OLE DB Destination.Inputs[OLE DB Destination Input].ExternalColumns[discriminator]"
+                      lineageId="Package\PostgresDB to SQL Server RAW\ODBC Source.Outputs[ODBC Source Output].Columns[discriminator]" />
+                    <inputColumn
+                      refId="Package\PostgresDB to SQL Server RAW\OLE DB Destination.Inputs[OLE DB Destination Input].Columns[distance]"
+                      cachedDataType="numeric"
+                      cachedName="distance"
+                      cachedPrecision="28"
+                      cachedScale="6"
+                      externalMetadataColumnId="Package\PostgresDB to SQL Server RAW\OLE DB Destination.Inputs[OLE DB Destination Input].ExternalColumns[distance]"
+                      lineageId="Package\PostgresDB to SQL Server RAW\ODBC Source.Outputs[ODBC Source Output].Columns[distance]" />
+                    <inputColumn
+                      refId="Package\PostgresDB to SQL Server RAW\OLE DB Destination.Inputs[OLE DB Destination Input].Columns[elapsed_time]"
+                      cachedDataType="i8"
+                      cachedName="elapsed_time"
+                      externalMetadataColumnId="Package\PostgresDB to SQL Server RAW\OLE DB Destination.Inputs[OLE DB Destination Input].ExternalColumns[elapsed_time]"
+                      lineageId="Package\PostgresDB to SQL Server RAW\ODBC Source.Outputs[ODBC Source Output].Columns[elapsed_time]" />
+                    <inputColumn
+                      refId="Package\PostgresDB to SQL Server RAW\OLE DB Destination.Inputs[OLE DB Destination Input].Columns[elev_high]"
+                      cachedDataType="numeric"
+                      cachedName="elev_high"
+                      cachedPrecision="28"
+                      cachedScale="6"
+                      externalMetadataColumnId="Package\PostgresDB to SQL Server RAW\OLE DB Destination.Inputs[OLE DB Destination Input].ExternalColumns[elev_high]"
+                      lineageId="Package\PostgresDB to SQL Server RAW\ODBC Source.Outputs[ODBC Source Output].Columns[elev_high]" />
+                    <inputColumn
+                      refId="Package\PostgresDB to SQL Server RAW\OLE DB Destination.Inputs[OLE DB Destination Input].Columns[elev_low]"
+                      cachedDataType="numeric"
+                      cachedName="elev_low"
+                      cachedPrecision="28"
+                      cachedScale="6"
+                      externalMetadataColumnId="Package\PostgresDB to SQL Server RAW\OLE DB Destination.Inputs[OLE DB Destination Input].ExternalColumns[elev_low]"
+                      lineageId="Package\PostgresDB to SQL Server RAW\ODBC Source.Outputs[ODBC Source Output].Columns[elev_low]" />
+                    <inputColumn
+                      refId="Package\PostgresDB to SQL Server RAW\OLE DB Destination.Inputs[OLE DB Destination Input].Columns[end_latlng]"
+                      cachedDataType="nText"
+                      cachedName="end_latlng"
+                      externalMetadataColumnId="Package\PostgresDB to SQL Server RAW\OLE DB Destination.Inputs[OLE DB Destination Input].ExternalColumns[end_latlng]"
+                      lineageId="Package\PostgresDB to SQL Server RAW\ODBC Source.Outputs[ODBC Source Output].Columns[end_latlng]" />
+                    <inputColumn
+                      refId="Package\PostgresDB to SQL Server RAW\OLE DB Destination.Inputs[OLE DB Destination Input].Columns[external_id]"
+                      cachedDataType="nText"
+                      cachedName="external_id"
+                      externalMetadataColumnId="Package\PostgresDB to SQL Server RAW\OLE DB Destination.Inputs[OLE DB Destination Input].ExternalColumns[external_id]"
+                      lineageId="Package\PostgresDB to SQL Server RAW\ODBC Source.Outputs[ODBC Source Output].Columns[external_id]" />
+                    <inputColumn
+                      refId="Package\PostgresDB to SQL Server RAW\OLE DB Destination.Inputs[OLE DB Destination Input].Columns[flagged]"
+                      cachedCodepage="1252"
+                      cachedDataType="str"
+                      cachedLength="5"
+                      cachedName="flagged"
+                      externalMetadataColumnId="Package\PostgresDB to SQL Server RAW\OLE DB Destination.Inputs[OLE DB Destination Input].ExternalColumns[flagged]"
+                      lineageId="Package\PostgresDB to SQL Server RAW\ODBC Source.Outputs[ODBC Source Output].Columns[flagged]" />
+                    <inputColumn
+                      refId="Package\PostgresDB to SQL Server RAW\OLE DB Destination.Inputs[OLE DB Destination Input].Columns[gear_id]"
+                      cachedDataType="nText"
+                      cachedName="gear_id"
+                      externalMetadataColumnId="Package\PostgresDB to SQL Server RAW\OLE DB Destination.Inputs[OLE DB Destination Input].ExternalColumns[gear_id]"
+                      lineageId="Package\PostgresDB to SQL Server RAW\ODBC Source.Outputs[ODBC Source Output].Columns[gear_id]" />
+                    <inputColumn
+                      refId="Package\PostgresDB to SQL Server RAW\OLE DB Destination.Inputs[OLE DB Destination Input].Columns[has_kudoed]"
+                      cachedCodepage="1252"
+                      cachedDataType="str"
+                      cachedLength="5"
+                      cachedName="has_kudoed"
+                      externalMetadataColumnId="Package\PostgresDB to SQL Server RAW\OLE DB Destination.Inputs[OLE DB Destination Input].ExternalColumns[has_kudoed]"
+                      lineageId="Package\PostgresDB to SQL Server RAW\ODBC Source.Outputs[ODBC Source Output].Columns[has_kudoed]" />
+                    <inputColumn
+                      refId="Package\PostgresDB to SQL Server RAW\OLE DB Destination.Inputs[OLE DB Destination Input].Columns[id]"
+                      cachedDataType="i8"
+                      cachedName="id"
+                      externalMetadataColumnId="Package\PostgresDB to SQL Server RAW\OLE DB Destination.Inputs[OLE DB Destination Input].ExternalColumns[id]"
+                      lineageId="Package\PostgresDB to SQL Server RAW\ODBC Source.Outputs[ODBC Source Output].Columns[id]" />
+                    <inputColumn
+                      refId="Package\PostgresDB to SQL Server RAW\OLE DB Destination.Inputs[OLE DB Destination Input].Columns[kilojoules]"
+                      cachedDataType="numeric"
+                      cachedName="kilojoules"
+                      cachedPrecision="28"
+                      cachedScale="6"
+                      externalMetadataColumnId="Package\PostgresDB to SQL Server RAW\OLE DB Destination.Inputs[OLE DB Destination Input].ExternalColumns[kilojoules]"
+                      lineageId="Package\PostgresDB to SQL Server RAW\ODBC Source.Outputs[ODBC Source Output].Columns[kilojoules]" />
+                    <inputColumn
+                      refId="Package\PostgresDB to SQL Server RAW\OLE DB Destination.Inputs[OLE DB Destination Input].Columns[kudos_count]"
+                      cachedDataType="i8"
+                      cachedName="kudos_count"
+                      externalMetadataColumnId="Package\PostgresDB to SQL Server RAW\OLE DB Destination.Inputs[OLE DB Destination Input].ExternalColumns[kudos_count]"
+                      lineageId="Package\PostgresDB to SQL Server RAW\ODBC Source.Outputs[ODBC Source Output].Columns[kudos_count]" />
+                    <inputColumn
+                      refId="Package\PostgresDB to SQL Server RAW\OLE DB Destination.Inputs[OLE DB Destination Input].Columns[manual]"
+                      cachedCodepage="1252"
+                      cachedDataType="str"
+                      cachedLength="5"
+                      cachedName="manual"
+                      externalMetadataColumnId="Package\PostgresDB to SQL Server RAW\OLE DB Destination.Inputs[OLE DB Destination Input].ExternalColumns[manual]"
+                      lineageId="Package\PostgresDB to SQL Server RAW\ODBC Source.Outputs[ODBC Source Output].Columns[manual]" />
+                    <inputColumn
+                      refId="Package\PostgresDB to SQL Server RAW\OLE DB Destination.Inputs[OLE DB Destination Input].Columns[map]"
+                      cachedDataType="nText"
+                      cachedName="map"
+                      externalMetadataColumnId="Package\PostgresDB to SQL Server RAW\OLE DB Destination.Inputs[OLE DB Destination Input].ExternalColumns[map]"
+                      lineageId="Package\PostgresDB to SQL Server RAW\ODBC Source.Outputs[ODBC Source Output].Columns[map]" />
+                    <inputColumn
+                      refId="Package\PostgresDB to SQL Server RAW\OLE DB Destination.Inputs[OLE DB Destination Input].Columns[max_speed]"
+                      cachedDataType="numeric"
+                      cachedName="max_speed"
+                      cachedPrecision="28"
+                      cachedScale="6"
+                      externalMetadataColumnId="Package\PostgresDB to SQL Server RAW\OLE DB Destination.Inputs[OLE DB Destination Input].ExternalColumns[max_speed]"
+                      lineageId="Package\PostgresDB to SQL Server RAW\ODBC Source.Outputs[ODBC Source Output].Columns[max_speed]" />
+                    <inputColumn
+                      refId="Package\PostgresDB to SQL Server RAW\OLE DB Destination.Inputs[OLE DB Destination Input].Columns[max_watts]"
+                      cachedDataType="numeric"
+                      cachedName="max_watts"
+                      cachedPrecision="28"
+                      cachedScale="6"
+                      externalMetadataColumnId="Package\PostgresDB to SQL Server RAW\OLE DB Destination.Inputs[OLE DB Destination Input].ExternalColumns[max_watts]"
+                      lineageId="Package\PostgresDB to SQL Server RAW\ODBC Source.Outputs[ODBC Source Output].Columns[max_watts]" />
+                    <inputColumn
+                      refId="Package\PostgresDB to SQL Server RAW\OLE DB Destination.Inputs[OLE DB Destination Input].Columns[moving_time]"
+                      cachedDataType="i8"
+                      cachedName="moving_time"
+                      externalMetadataColumnId="Package\PostgresDB to SQL Server RAW\OLE DB Destination.Inputs[OLE DB Destination Input].ExternalColumns[moving_time]"
+                      lineageId="Package\PostgresDB to SQL Server RAW\ODBC Source.Outputs[ODBC Source Output].Columns[moving_time]" />
+                    <inputColumn
+                      refId="Package\PostgresDB to SQL Server RAW\OLE DB Destination.Inputs[OLE DB Destination Input].Columns[photo_count]"
+                      cachedDataType="i8"
+                      cachedName="photo_count"
+                      externalMetadataColumnId="Package\PostgresDB to SQL Server RAW\OLE DB Destination.Inputs[OLE DB Destination Input].ExternalColumns[photo_count]"
+                      lineageId="Package\PostgresDB to SQL Server RAW\ODBC Source.Outputs[ODBC Source Output].Columns[photo_count]" />
+                    <inputColumn
+                      refId="Package\PostgresDB to SQL Server RAW\OLE DB Destination.Inputs[OLE DB Destination Input].Columns[private]"
+                      cachedCodepage="1252"
+                      cachedDataType="str"
+                      cachedLength="5"
+                      cachedName="private"
+                      externalMetadataColumnId="Package\PostgresDB to SQL Server RAW\OLE DB Destination.Inputs[OLE DB Destination Input].ExternalColumns[private]"
+                      lineageId="Package\PostgresDB to SQL Server RAW\ODBC Source.Outputs[ODBC Source Output].Columns[private]" />
+                    <inputColumn
+                      refId="Package\PostgresDB to SQL Server RAW\OLE DB Destination.Inputs[OLE DB Destination Input].Columns[start_date]"
+                      cachedDataType="dbTimeStamp2"
+                      cachedName="start_date"
+                      cachedScale="6"
+                      externalMetadataColumnId="Package\PostgresDB to SQL Server RAW\OLE DB Destination.Inputs[OLE DB Destination Input].ExternalColumns[start_date]"
+                      lineageId="Package\PostgresDB to SQL Server RAW\ODBC Source.Outputs[ODBC Source Output].Columns[start_date]" />
+                    <inputColumn
+                      refId="Package\PostgresDB to SQL Server RAW\OLE DB Destination.Inputs[OLE DB Destination Input].Columns[start_date_local]"
+                      cachedDataType="dbTimeStamp2"
+                      cachedName="start_date_local"
+                      cachedScale="6"
+                      externalMetadataColumnId="Package\PostgresDB to SQL Server RAW\OLE DB Destination.Inputs[OLE DB Destination Input].ExternalColumns[start_date_local]"
+                      lineageId="Package\PostgresDB to SQL Server RAW\ODBC Source.Outputs[ODBC Source Output].Columns[start_date_local]" />
+                    <inputColumn
+                      refId="Package\PostgresDB to SQL Server RAW\OLE DB Destination.Inputs[OLE DB Destination Input].Columns[start_latlng]"
+                      cachedDataType="nText"
+                      cachedName="start_latlng"
+                      externalMetadataColumnId="Package\PostgresDB to SQL Server RAW\OLE DB Destination.Inputs[OLE DB Destination Input].ExternalColumns[start_latlng]"
+                      lineageId="Package\PostgresDB to SQL Server RAW\ODBC Source.Outputs[ODBC Source Output].Columns[start_latlng]" />
+                    <inputColumn
+                      refId="Package\PostgresDB to SQL Server RAW\OLE DB Destination.Inputs[OLE DB Destination Input].Columns[swagger_types]"
+                      cachedDataType="nText"
+                      cachedName="swagger_types"
+                      externalMetadataColumnId="Package\PostgresDB to SQL Server RAW\OLE DB Destination.Inputs[OLE DB Destination Input].ExternalColumns[swagger_types]"
+                      lineageId="Package\PostgresDB to SQL Server RAW\ODBC Source.Outputs[ODBC Source Output].Columns[swagger_types]" />
+                    <inputColumn
+                      refId="Package\PostgresDB to SQL Server RAW\OLE DB Destination.Inputs[OLE DB Destination Input].Columns[timezone]"
+                      cachedDataType="nText"
+                      cachedName="timezone"
+                      externalMetadataColumnId="Package\PostgresDB to SQL Server RAW\OLE DB Destination.Inputs[OLE DB Destination Input].ExternalColumns[timezone]"
+                      lineageId="Package\PostgresDB to SQL Server RAW\ODBC Source.Outputs[ODBC Source Output].Columns[timezone]" />
+                    <inputColumn
+                      refId="Package\PostgresDB to SQL Server RAW\OLE DB Destination.Inputs[OLE DB Destination Input].Columns[total_elevation_gain]"
+                      cachedDataType="numeric"
+                      cachedName="total_elevation_gain"
+                      cachedPrecision="28"
+                      cachedScale="6"
+                      externalMetadataColumnId="Package\PostgresDB to SQL Server RAW\OLE DB Destination.Inputs[OLE DB Destination Input].ExternalColumns[total_elevation_gain]"
+                      lineageId="Package\PostgresDB to SQL Server RAW\ODBC Source.Outputs[ODBC Source Output].Columns[total_elevation_gain]" />
+                    <inputColumn
+                      refId="Package\PostgresDB to SQL Server RAW\OLE DB Destination.Inputs[OLE DB Destination Input].Columns[total_photo_count]"
+                      cachedDataType="i8"
+                      cachedName="total_photo_count"
+                      externalMetadataColumnId="Package\PostgresDB to SQL Server RAW\OLE DB Destination.Inputs[OLE DB Destination Input].ExternalColumns[total_photo_count]"
+                      lineageId="Package\PostgresDB to SQL Server RAW\ODBC Source.Outputs[ODBC Source Output].Columns[total_photo_count]" />
+                    <inputColumn
+                      refId="Package\PostgresDB to SQL Server RAW\OLE DB Destination.Inputs[OLE DB Destination Input].Columns[trainer]"
+                      cachedCodepage="1252"
+                      cachedDataType="str"
+                      cachedLength="5"
+                      cachedName="trainer"
+                      externalMetadataColumnId="Package\PostgresDB to SQL Server RAW\OLE DB Destination.Inputs[OLE DB Destination Input].ExternalColumns[trainer]"
+                      lineageId="Package\PostgresDB to SQL Server RAW\ODBC Source.Outputs[ODBC Source Output].Columns[trainer]" />
+                    <inputColumn
+                      refId="Package\PostgresDB to SQL Server RAW\OLE DB Destination.Inputs[OLE DB Destination Input].Columns[type]"
+                      cachedDataType="nText"
+                      cachedName="type"
+                      externalMetadataColumnId="Package\PostgresDB to SQL Server RAW\OLE DB Destination.Inputs[OLE DB Destination Input].ExternalColumns[type]"
+                      lineageId="Package\PostgresDB to SQL Server RAW\ODBC Source.Outputs[ODBC Source Output].Columns[type]" />
+                    <inputColumn
+                      refId="Package\PostgresDB to SQL Server RAW\OLE DB Destination.Inputs[OLE DB Destination Input].Columns[upload_id]"
+                      cachedDataType="i8"
+                      cachedName="upload_id"
+                      externalMetadataColumnId="Package\PostgresDB to SQL Server RAW\OLE DB Destination.Inputs[OLE DB Destination Input].ExternalColumns[upload_id]"
+                      lineageId="Package\PostgresDB to SQL Server RAW\ODBC Source.Outputs[ODBC Source Output].Columns[upload_id]" />
+                    <inputColumn
+                      refId="Package\PostgresDB to SQL Server RAW\OLE DB Destination.Inputs[OLE DB Destination Input].Columns[weighted_average_watts]"
+                      cachedDataType="numeric"
+                      cachedName="weighted_average_watts"
+                      cachedPrecision="28"
+                      cachedScale="6"
+                      externalMetadataColumnId="Package\PostgresDB to SQL Server RAW\OLE DB Destination.Inputs[OLE DB Destination Input].ExternalColumns[weighted_average_watts]"
+                      lineageId="Package\PostgresDB to SQL Server RAW\ODBC Source.Outputs[ODBC Source Output].Columns[weighted_average_watts]" />
+                    <inputColumn
+                      refId="Package\PostgresDB to SQL Server RAW\OLE DB Destination.Inputs[OLE DB Destination Input].Columns[workout_type]"
+                      cachedDataType="numeric"
+                      cachedName="workout_type"
+                      cachedPrecision="28"
+                      cachedScale="6"
+                      externalMetadataColumnId="Package\PostgresDB to SQL Server RAW\OLE DB Destination.Inputs[OLE DB Destination Input].ExternalColumns[workout_type]"
+                      lineageId="Package\PostgresDB to SQL Server RAW\ODBC Source.Outputs[ODBC Source Output].Columns[workout_type]" />
+                  </inputColumns>
+                  <externalMetadataColumns
+                    isUsed="True">
+                    <externalMetadataColumn
+                      refId="Package\PostgresDB to SQL Server RAW\OLE DB Destination.Inputs[OLE DB Destination Input].ExternalColumns[db_id]"
+                      dataType="i4"
+                      name="db_id" />
+                    <externalMetadataColumn
+                      refId="Package\PostgresDB to SQL Server RAW\OLE DB Destination.Inputs[OLE DB Destination Input].ExternalColumns[achievement_count]"
+                      dataType="i8"
+                      name="achievement_count" />
+                    <externalMetadataColumn
+                      refId="Package\PostgresDB to SQL Server RAW\OLE DB Destination.Inputs[OLE DB Destination Input].ExternalColumns[athlete]"
+                      dataType="nText"
+                      name="athlete" />
+                    <externalMetadataColumn
+                      refId="Package\PostgresDB to SQL Server RAW\OLE DB Destination.Inputs[OLE DB Destination Input].ExternalColumns[athlete_count]"
+                      dataType="i8"
+                      name="athlete_count" />
+                    <externalMetadataColumn
+                      refId="Package\PostgresDB to SQL Server RAW\OLE DB Destination.Inputs[OLE DB Destination Input].ExternalColumns[attribute_map]"
+                      dataType="nText"
+                      name="attribute_map" />
+                    <externalMetadataColumn
+                      refId="Package\PostgresDB to SQL Server RAW\OLE DB Destination.Inputs[OLE DB Destination Input].ExternalColumns[average_speed]"
+                      dataType="numeric"
+                      name="average_speed"
+                      precision="18" />
+                    <externalMetadataColumn
+                      refId="Package\PostgresDB to SQL Server RAW\OLE DB Destination.Inputs[OLE DB Destination Input].ExternalColumns[average_watts]"
+                      dataType="numeric"
+                      name="average_watts"
+                      precision="18" />
+                    <externalMetadataColumn
+                      refId="Package\PostgresDB to SQL Server RAW\OLE DB Destination.Inputs[OLE DB Destination Input].ExternalColumns[comment_count]"
+                      dataType="i8"
+                      name="comment_count" />
+                    <externalMetadataColumn
+                      refId="Package\PostgresDB to SQL Server RAW\OLE DB Destination.Inputs[OLE DB Destination Input].ExternalColumns[commute]"
+                      codePage="1252"
+                      dataType="str"
+                      length="10"
+                      name="commute" />
+                    <externalMetadataColumn
+                      refId="Package\PostgresDB to SQL Server RAW\OLE DB Destination.Inputs[OLE DB Destination Input].ExternalColumns[device_watts]"
+                      dataType="nText"
+                      name="device_watts" />
+                    <externalMetadataColumn
+                      refId="Package\PostgresDB to SQL Server RAW\OLE DB Destination.Inputs[OLE DB Destination Input].ExternalColumns[discriminator]"
+                      dataType="nText"
+                      name="discriminator" />
+                    <externalMetadataColumn
+                      refId="Package\PostgresDB to SQL Server RAW\OLE DB Destination.Inputs[OLE DB Destination Input].ExternalColumns[distance]"
+                      dataType="numeric"
+                      name="distance"
+                      precision="18" />
+                    <externalMetadataColumn
+                      refId="Package\PostgresDB to SQL Server RAW\OLE DB Destination.Inputs[OLE DB Destination Input].ExternalColumns[elapsed_time]"
+                      dataType="i8"
+                      name="elapsed_time" />
+                    <externalMetadataColumn
+                      refId="Package\PostgresDB to SQL Server RAW\OLE DB Destination.Inputs[OLE DB Destination Input].ExternalColumns[elev_high]"
+                      dataType="numeric"
+                      name="elev_high"
+                      precision="18" />
+                    <externalMetadataColumn
+                      refId="Package\PostgresDB to SQL Server RAW\OLE DB Destination.Inputs[OLE DB Destination Input].ExternalColumns[elev_low]"
+                      dataType="numeric"
+                      name="elev_low"
+                      precision="18" />
+                    <externalMetadataColumn
+                      refId="Package\PostgresDB to SQL Server RAW\OLE DB Destination.Inputs[OLE DB Destination Input].ExternalColumns[end_latlng]"
+                      dataType="nText"
+                      name="end_latlng" />
+                    <externalMetadataColumn
+                      refId="Package\PostgresDB to SQL Server RAW\OLE DB Destination.Inputs[OLE DB Destination Input].ExternalColumns[external_id]"
+                      dataType="nText"
+                      name="external_id" />
+                    <externalMetadataColumn
+                      refId="Package\PostgresDB to SQL Server RAW\OLE DB Destination.Inputs[OLE DB Destination Input].ExternalColumns[flagged]"
+                      codePage="1252"
+                      dataType="str"
+                      length="10"
+                      name="flagged" />
+                    <externalMetadataColumn
+                      refId="Package\PostgresDB to SQL Server RAW\OLE DB Destination.Inputs[OLE DB Destination Input].ExternalColumns[gear_id]"
+                      dataType="nText"
+                      name="gear_id" />
+                    <externalMetadataColumn
+                      refId="Package\PostgresDB to SQL Server RAW\OLE DB Destination.Inputs[OLE DB Destination Input].ExternalColumns[has_kudoed]"
+                      codePage="1252"
+                      dataType="str"
+                      length="10"
+                      name="has_kudoed" />
+                    <externalMetadataColumn
+                      refId="Package\PostgresDB to SQL Server RAW\OLE DB Destination.Inputs[OLE DB Destination Input].ExternalColumns[id]"
+                      dataType="i8"
+                      name="id" />
+                    <externalMetadataColumn
+                      refId="Package\PostgresDB to SQL Server RAW\OLE DB Destination.Inputs[OLE DB Destination Input].ExternalColumns[kilojoules]"
+                      dataType="numeric"
+                      name="kilojoules"
+                      precision="18" />
+                    <externalMetadataColumn
+                      refId="Package\PostgresDB to SQL Server RAW\OLE DB Destination.Inputs[OLE DB Destination Input].ExternalColumns[kudos_count]"
+                      dataType="i8"
+                      name="kudos_count" />
+                    <externalMetadataColumn
+                      refId="Package\PostgresDB to SQL Server RAW\OLE DB Destination.Inputs[OLE DB Destination Input].ExternalColumns[manual]"
+                      codePage="1252"
+                      dataType="str"
+                      length="10"
+                      name="manual" />
+                    <externalMetadataColumn
+                      refId="Package\PostgresDB to SQL Server RAW\OLE DB Destination.Inputs[OLE DB Destination Input].ExternalColumns[map]"
+                      dataType="nText"
+                      name="map" />
+                    <externalMetadataColumn
+                      refId="Package\PostgresDB to SQL Server RAW\OLE DB Destination.Inputs[OLE DB Destination Input].ExternalColumns[max_speed]"
+                      dataType="numeric"
+                      name="max_speed"
+                      precision="18" />
+                    <externalMetadataColumn
+                      refId="Package\PostgresDB to SQL Server RAW\OLE DB Destination.Inputs[OLE DB Destination Input].ExternalColumns[max_watts]"
+                      dataType="numeric"
+                      name="max_watts"
+                      precision="18" />
+                    <externalMetadataColumn
+                      refId="Package\PostgresDB to SQL Server RAW\OLE DB Destination.Inputs[OLE DB Destination Input].ExternalColumns[moving_time]"
+                      dataType="i8"
+                      name="moving_time" />
+                    <externalMetadataColumn
+                      refId="Package\PostgresDB to SQL Server RAW\OLE DB Destination.Inputs[OLE DB Destination Input].ExternalColumns[name]"
+                      dataType="nText"
+                      name="name" />
+                    <externalMetadataColumn
+                      refId="Package\PostgresDB to SQL Server RAW\OLE DB Destination.Inputs[OLE DB Destination Input].ExternalColumns[photo_count]"
+                      dataType="i8"
+                      name="photo_count" />
+                    <externalMetadataColumn
+                      refId="Package\PostgresDB to SQL Server RAW\OLE DB Destination.Inputs[OLE DB Destination Input].ExternalColumns[private]"
+                      codePage="1252"
+                      dataType="str"
+                      length="10"
+                      name="private" />
+                    <externalMetadataColumn
+                      refId="Package\PostgresDB to SQL Server RAW\OLE DB Destination.Inputs[OLE DB Destination Input].ExternalColumns[start_date]"
+                      dataType="dbTimeStamp"
+                      name="start_date" />
+                    <externalMetadataColumn
+                      refId="Package\PostgresDB to SQL Server RAW\OLE DB Destination.Inputs[OLE DB Destination Input].ExternalColumns[start_date_local]"
+                      dataType="dbTimeStamp"
+                      name="start_date_local" />
+                    <externalMetadataColumn
+                      refId="Package\PostgresDB to SQL Server RAW\OLE DB Destination.Inputs[OLE DB Destination Input].ExternalColumns[start_latlng]"
+                      dataType="nText"
+                      name="start_latlng" />
+                    <externalMetadataColumn
+                      refId="Package\PostgresDB to SQL Server RAW\OLE DB Destination.Inputs[OLE DB Destination Input].ExternalColumns[swagger_types]"
+                      dataType="nText"
+                      name="swagger_types" />
+                    <externalMetadataColumn
+                      refId="Package\PostgresDB to SQL Server RAW\OLE DB Destination.Inputs[OLE DB Destination Input].ExternalColumns[timezone]"
+                      dataType="nText"
+                      name="timezone" />
+                    <externalMetadataColumn
+                      refId="Package\PostgresDB to SQL Server RAW\OLE DB Destination.Inputs[OLE DB Destination Input].ExternalColumns[total_elevation_gain]"
+                      dataType="numeric"
+                      name="total_elevation_gain"
+                      precision="18" />
+                    <externalMetadataColumn
+                      refId="Package\PostgresDB to SQL Server RAW\OLE DB Destination.Inputs[OLE DB Destination Input].ExternalColumns[total_photo_count]"
+                      dataType="i8"
+                      name="total_photo_count" />
+                    <externalMetadataColumn
+                      refId="Package\PostgresDB to SQL Server RAW\OLE DB Destination.Inputs[OLE DB Destination Input].ExternalColumns[trainer]"
+                      codePage="1252"
+                      dataType="str"
+                      length="10"
+                      name="trainer" />
+                    <externalMetadataColumn
+                      refId="Package\PostgresDB to SQL Server RAW\OLE DB Destination.Inputs[OLE DB Destination Input].ExternalColumns[type]"
+                      dataType="nText"
+                      name="type" />
+                    <externalMetadataColumn
+                      refId="Package\PostgresDB to SQL Server RAW\OLE DB Destination.Inputs[OLE DB Destination Input].ExternalColumns[upload_id]"
+                      dataType="i8"
+                      name="upload_id" />
+                    <externalMetadataColumn
+                      refId="Package\PostgresDB to SQL Server RAW\OLE DB Destination.Inputs[OLE DB Destination Input].ExternalColumns[weighted_average_watts]"
+                      dataType="numeric"
+                      name="weighted_average_watts"
+                      precision="18" />
+                    <externalMetadataColumn
+                      refId="Package\PostgresDB to SQL Server RAW\OLE DB Destination.Inputs[OLE DB Destination Input].ExternalColumns[workout_type]"
+                      dataType="numeric"
+                      name="workout_type"
+                      precision="18" />
+                    <externalMetadataColumn
+                      refId="Package\PostgresDB to SQL Server RAW\OLE DB Destination.Inputs[OLE DB Destination Input].ExternalColumns[isprocessed]"
+                      codePage="1252"
+                      dataType="str"
+                      length="10"
+                      name="isprocessed" />
+                  </externalMetadataColumns>
+                </input>
+              </inputs>
+              <outputs>
+                <output
+                  refId="Package\PostgresDB to SQL Server RAW\OLE DB Destination.Outputs[OLE DB Destination Error Output]"
+                  exclusionGroup="1"
+                  isErrorOut="true"
+                  name="OLE DB Destination Error Output"
+                  synchronousInputId="Package\PostgresDB to SQL Server RAW\OLE DB Destination.Inputs[OLE DB Destination Input]">
+                  <outputColumns>
+                    <outputColumn
+                      refId="Package\PostgresDB to SQL Server RAW\OLE DB Destination.Outputs[OLE DB Destination Error Output].Columns[ErrorCode]"
+                      dataType="i4"
+                      lineageId="Package\PostgresDB to SQL Server RAW\OLE DB Destination.Outputs[OLE DB Destination Error Output].Columns[ErrorCode]"
+                      name="ErrorCode"
+                      specialFlags="1" />
+                    <outputColumn
+                      refId="Package\PostgresDB to SQL Server RAW\OLE DB Destination.Outputs[OLE DB Destination Error Output].Columns[ErrorColumn]"
+                      dataType="i4"
+                      lineageId="Package\PostgresDB to SQL Server RAW\OLE DB Destination.Outputs[OLE DB Destination Error Output].Columns[ErrorColumn]"
+                      name="ErrorColumn"
+                      specialFlags="2" />
+                  </outputColumns>
+                  <externalMetadataColumns />
+                </output>
+              </outputs>
+            </component>
+          </components>
+          <paths>
+            <path
+              refId="Package\PostgresDB to SQL Server RAW.Paths[ODBC Source Output]"
+              endId="Package\PostgresDB to SQL Server RAW\OLE DB Destination.Inputs[OLE DB Destination Input]"
+              name="ODBC Source Output"
+              startId="Package\PostgresDB to SQL Server RAW\ODBC Source.Outputs[ODBC Source Output]" />
+          </paths>
+        </pipeline>
+      </DTS:ObjectData>
+    </DTS:Executable>
+  </DTS:Executables>
+  <DTS:DesignTimeProperties><![CDATA[<?xml version="1.0"?>
+<!--This CDATA section contains the layout information of the package. The section includes information such as (x,y) coordinates, width, and height.-->
+<!--If you manually edit this section and make a mistake, you can delete it. -->
+<!--The package will still be able to load normally but the previous layout information will be lost and the designer will automatically re-arrange the elements on the design surface.-->
+<Objects
+  Version="8">
+  <!--Each node below will contain properties that do not affect runtime behavior.-->
+  <Package
+    design-time-name="Package">
+    <LayoutInfo>
+      <GraphLayout
+        Capacity="4" xmlns="clr-namespace:Microsoft.SqlServer.IntegrationServices.Designer.Model.Serialization;assembly=Microsoft.SqlServer.IntegrationServices.Graph">
+        <NodeLayout
+          Size="239,42"
+          Id="Package\PostgresDB to SQL Server RAW"
+          TopLeft="215,116" />
+      </GraphLayout>
+    </LayoutInfo>
+  </Package>
+  <TaskHost
+    design-time-name="Package\PostgresDB to SQL Server RAW">
+    <LayoutInfo>
+      <GraphLayout
+        Capacity="4" xmlns="clr-namespace:Microsoft.SqlServer.IntegrationServices.Designer.Model.Serialization;assembly=Microsoft.SqlServer.IntegrationServices.Graph" xmlns:mssgle="clr-namespace:Microsoft.SqlServer.Graph.LayoutEngine;assembly=Microsoft.SqlServer.Graph" xmlns:assembly="http://schemas.microsoft.com/winfx/2006/xaml">
+        <NodeLayout
+          Size="149,42"
+          Id="Package\PostgresDB to SQL Server RAW\ODBC Source"
+          TopLeft="191,161" />
+        <NodeLayout
+          Size="177,42"
+          Id="Package\PostgresDB to SQL Server RAW\OLE DB Destination"
+          TopLeft="172,317" />
+        <EdgeLayout
+          Id="Package\PostgresDB to SQL Server RAW.Paths[ODBC Source Output]"
+          TopLeft="263,203">
+          <EdgeLayout.Curve>
+            <mssgle:Curve
+              StartConnector="{assembly:Null}"
+              EndConnector="0,114"
+              Start="0,0"
+              End="0,106.5">
+              <mssgle:Curve.Segments>
+                <mssgle:SegmentCollection
+                  Capacity="5">
+                  <mssgle:LineSegment
+                    End="0,106.5" />
+                </mssgle:SegmentCollection>
+              </mssgle:Curve.Segments>
+            </mssgle:Curve>
+          </EdgeLayout.Curve>
+          <EdgeLayout.Labels>
+            <EdgeLabelCollection />
+          </EdgeLayout.Labels>
+        </EdgeLayout>
+      </GraphLayout>
+    </LayoutInfo>
+  </TaskHost>
+  <PipelineComponentMetadata
+    design-time-name="Package\PostgresDB to SQL Server RAW\ODBC Source">
+    <Properties>
+      <Property>
+        <Name>DataSourceViewID</Name>
+      </Property>
+      <Property>
+        <Name>TableInfoObjectType</Name>
+        <Value
+          type="q2:string">Table</Value>
+      </Property>
+    </Properties>
+  </PipelineComponentMetadata>
+  <PipelineComponentMetadata
+    design-time-name="Package\PostgresDB to SQL Server RAW\OLE DB Destination">
+    <Properties>
+      <Property>
+        <Name>DataSourceViewID</Name>
+      </Property>
+      <Property>
+        <Name>TableInfoObjectType</Name>
+        <Value
+          type="q2:string">Table</Value>
+      </Property>
+    </Properties>
+  </PipelineComponentMetadata>
+</Objects>]]></DTS:DesignTimeProperties>
+</DTS:Executable>
