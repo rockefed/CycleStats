@@ -1,0 +1,14 @@
+﻿<?xml version="1.0"?>
+<DTS:ConnectionManager xmlns:DTS="www.microsoft.com/SqlServer/Dts"
+  DTS:ObjectName="CycleStats_PostgresDB"
+  DTS:DTSID="{2F245927-72F0-4FF2-BF7C-37B476DDFC09}"
+  DTS:CreationName="ODBC">
+  <DTS:ObjectData>
+    <DTS:ConnectionManager
+      DTS:ConnectionString="uid=postgres;Dsn=PostgreSQL35W;">
+      <DTS:Password
+        DTS:Name="pwd"
+        Sensitive="1">AQAAANCMnd8BFdERjHoAwE/Cl+sBAAAAEtyRd5wAF0CDi9FqadFo/gAAAAACAAAAAAAQZgAAAAEAACAAAABO6iIbZVx+pSJKM2qeS50hJae0b2b3vdtC0wE+SlQOMAAAAAAOgAAAAAIAACAAAABFKkhhB/et8vP7dPClnMfkmbRKxuEJinfPp75DwLWWy3AAAACGRwxda3gOsG8nGWspq3L5eTaMCgFJKvo4r133yOW5sW617JjnBl+ibTXkWzbjuCEhvwyEPfr37pyzbontuj9OVqpaY4BvA4tor3gyhBrMI2wOiMt3W2Z4K+TgXEzpchuVdDF8+3I3aLi0I2wbWFs4QAAAAJp1PSczJu/gLaxoTpQkm5T10/+4ok3/C4EaASw1IyYCwCf3pGHz+uQwpgzqYZVnl5NHp61AdNSw4K7RkM6R6yM=</DTS:Password>
+    </DTS:ConnectionManager>
+  </DTS:ObjectData>
+</DTS:ConnectionManager>

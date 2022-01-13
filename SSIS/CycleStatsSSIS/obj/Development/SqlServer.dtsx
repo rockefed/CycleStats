@@ -1,4 +1,4 @@
-﻿<?xml version="1.0"?>
+<?xml version="1.0"?>
 <DTS:Executable xmlns:DTS="www.microsoft.com/SqlServer/Dts"
   DTS:refId="Package"
   DTS:CreationDate="8/20/2021 6:50:49 PM"
@@ -11,45 +11,17 @@
   DTS:LocaleID="1033"
   DTS:ObjectName="Package"
   DTS:PackageType="5"
-  DTS:VersionBuild="6"
-  DTS:VersionGUID="{BF7AB2CB-BDDA-46CB-9CF7-86E45022AA02}">
+  DTS:VersionBuild="20"
+  DTS:VersionGUID="{F789D145-90EE-4865-8740-CDF3A4CD5767}">
   <DTS:Property
     DTS:Name="PackageFormatVersion">8</DTS:Property>
-  <DTS:ConnectionManagers>
-    <DTS:ConnectionManager
-      DTS:refId="Package.ConnectionManagers[CycleStatsWarehouse_SqlServerDB]"
-      DTS:CreationName="OLEDB"
-      DTS:DTSID="{6EB5E7EE-4C2F-4D16-8F04-1F73CE541CC0}"
-      DTS:ObjectName="CycleStatsWarehouse_SqlServerDB">
-      <DTS:ObjectData>
-        <DTS:ConnectionManager
-          DTS:ConnectRetryCount="1"
-          DTS:ConnectRetryInterval="5"
-          DTS:ConnectionString="Data Source=UGLYANIMALFARM;Initial Catalog=CycleStatsWarehouse;Provider=SQLNCLI11.1;Integrated Security=SSPI;Auto Translate=False;" />
-      </DTS:ObjectData>
-    </DTS:ConnectionManager>
-    <DTS:ConnectionManager
-      DTS:refId="Package.ConnectionManagers[CycleStats_PostgresDB]"
-      DTS:CreationName="ODBC"
-      DTS:DTSID="{2F245927-72F0-4FF2-BF7C-37B476DDFC09}"
-      DTS:ObjectName="CycleStats_PostgresDB">
-      <DTS:ObjectData>
-        <DTS:ConnectionManager
-          DTS:ConnectionString="uid=postgres;Dsn=PostgreSQL35W;">
-          <DTS:Password
-            DTS:Name="pwd"
-            Sensitive="1"
-            Encrypted="1">AQAAANCMnd8BFdERjHoAwE/Cl+sBAAAAEtyRd5wAF0CDi9FqadFo/gAAAAAIAAAARABUAFMAAAAQZgAAAAEAACAAAAAqHIDxKJdwI/u7dDG7I0KEtHeYQmMmyTJHPZE6gTcSgAAAAAAOgAAAAAIAACAAAAAzRgu0jFC43KvpylzelWuauym6Lq6FtXiOnQ6RiM4g8CAAAADuKThSIZe/rtquTdKx9VFo4wedyqKyOQIIqk5qyslNlUAAAADXMhx7fdaRBLeOMWQlhYGkOu2fFKniKe/Tvnwt9593E/fg+O1EMpBTvGIFqgrK7QReyLHeBFkpKFHz6Y4Zeltz</DTS:Password>
-        </DTS:ConnectionManager>
-      </DTS:ObjectData>
-    </DTS:ConnectionManager>
-  </DTS:ConnectionManagers>
   <DTS:Variables />
   <DTS:Executables>
     <DTS:Executable
       DTS:refId="Package\PostgresDB to SQL Server RAW"
       DTS:CreationName="Microsoft.Pipeline"
       DTS:Description="Data Flow Task"
+      DTS:Disabled="True"
       DTS:DTSID="{7036F741-EC48-4B73-86F3-756F8CE00710}"
       DTS:ExecutableType="Microsoft.Pipeline"
       DTS:LocaleID="-1"
@@ -131,8 +103,8 @@
               <connections>
                 <connection
                   refId="Package\PostgresDB to SQL Server RAW\ODBC Source.Connections[ODBCConnection]"
-                  connectionManagerID="Package.ConnectionManagers[CycleStats_PostgresDB]"
-                  connectionManagerRefId="Package.ConnectionManagers[CycleStats_PostgresDB]"
+                  connectionManagerID="{2F245927-72F0-4FF2-BF7C-37B476DDFC09}:external"
+                  connectionManagerRefId="Project.ConnectionManagers[CycleStats_PostgresDB]"
                   description="The ODBC runtime connection used to access the database."
                   name="ODBCConnection" />
               </connections>
@@ -1046,8 +1018,8 @@
               <connections>
                 <connection
                   refId="Package\PostgresDB to SQL Server RAW\OLE DB Destination.Connections[OleDbConnection]"
-                  connectionManagerID="Package.ConnectionManagers[CycleStatsWarehouse_SqlServerDB]"
-                  connectionManagerRefId="Package.ConnectionManagers[CycleStatsWarehouse_SqlServerDB]"
+                  connectionManagerID="{6EB5E7EE-4C2F-4D16-8F04-1F73CE541CC0}:external"
+                  connectionManagerRefId="Project.ConnectionManagers[CycleStatsWarehouse_SqlServerDB]"
                   description="The OLE DB runtime connection used to access the database."
                   name="OleDbConnection" />
               </connections>
@@ -1628,15 +1600,15 @@
     design-time-name="Package\PostgresDB to SQL Server RAW">
     <LayoutInfo>
       <GraphLayout
-        Capacity="4" xmlns="clr-namespace:Microsoft.SqlServer.IntegrationServices.Designer.Model.Serialization;assembly=Microsoft.SqlServer.IntegrationServices.Graph" xmlns:mssgle="clr-namespace:Microsoft.SqlServer.Graph.LayoutEngine;assembly=Microsoft.SqlServer.Graph" xmlns:assembly="http://schemas.microsoft.com/winfx/2006/xaml">
-        <NodeLayout
-          Size="149,42"
-          Id="Package\PostgresDB to SQL Server RAW\ODBC Source"
-          TopLeft="191,161" />
+        Capacity="4" xmlns="clr-namespace:Microsoft.SqlServer.IntegrationServices.Designer.Model.Serialization;assembly=Microsoft.SqlServer.IntegrationServices.Graph" xmlns:mssgle="clr-namespace:Microsoft.SqlServer.Graph.LayoutEngine;assembly=Microsoft.SqlServer.Graph" xmlns:assembly="http://schemas.microsoft.com/winfx/2006/xaml" xmlns:mssgm="clr-namespace:Microsoft.SqlServer.Graph.Model;assembly=Microsoft.SqlServer.Graph">
         <NodeLayout
           Size="177,42"
           Id="Package\PostgresDB to SQL Server RAW\OLE DB Destination"
           TopLeft="172,317" />
+        <NodeLayout
+          Size="149,42"
+          Id="Package\PostgresDB to SQL Server RAW\ODBC Source"
+          TopLeft="191,161" />
         <EdgeLayout
           Id="Package\PostgresDB to SQL Server RAW.Paths[ODBC Source Output]"
           TopLeft="263,203">
@@ -1656,7 +1628,9 @@
             </mssgle:Curve>
           </EdgeLayout.Curve>
           <EdgeLayout.Labels>
-            <EdgeLabelCollection />
+            <mssgm:EdgeLabel
+              BoundingBox="0,0,0,0"
+              RelativePosition="Any" />
           </EdgeLayout.Labels>
         </EdgeLayout>
       </GraphLayout>

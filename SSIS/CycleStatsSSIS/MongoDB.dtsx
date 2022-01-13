@@ -1,0 +1,293 @@
+﻿<?xml version="1.0"?>
+<DTS:Executable xmlns:DTS="www.microsoft.com/SqlServer/Dts"
+  DTS:refId="Package"
+  DTS:CreationDate="8/23/2021 12:12:09 PM"
+  DTS:CreationName="Microsoft.Package"
+  DTS:CreatorComputerName="UGLYANIMALFARM"
+  DTS:CreatorName="UGLYANIMALFARM\rocke"
+  DTS:DTSID="{5E05F6DE-4E84-4F52-9B11-3D0229361958}"
+  DTS:ExecutableType="Microsoft.Package"
+  DTS:LastModifiedProductVersion="15.0.2000.170"
+  DTS:LocaleID="1033"
+  DTS:ObjectName="MongoDb"
+  DTS:PackageType="5"
+  DTS:VersionBuild="4"
+  DTS:VersionGUID="{559F8041-D19F-4A40-BA54-92855676F50F}">
+  <DTS:Property
+    DTS:Name="PackageFormatVersion">8</DTS:Property>
+  <DTS:Variables />
+  <DTS:Executables>
+    <DTS:Executable
+      DTS:refId="Package\fail"
+      DTS:CreationName="Microsoft.ExecuteSQLTask"
+      DTS:Description="fail"
+      DTS:DTSID="{d562be52-8617-49d0-a176-d7e021e62f07}"
+      DTS:ExecutableType="Microsoft.ExecuteSQLTask"
+      DTS:LocaleID="-1"
+      DTS:ObjectName="fail"
+      DTS:TaskContact="Execute SQL Task; Microsoft Corporation; SQL Server 2019; © 2019 Microsoft Corporation; All Rights Reserved;http://www.microsoft.com/sql/support/default.asp;1"
+      DTS:ThreadHint="0">
+      <DTS:Variables />
+      <DTS:ObjectData>
+        <SQLTask:SqlTaskData
+          SQLTask:Connection="{6EB5E7EE-4C2F-4D16-8F04-1F73CE541CC0}"
+          SQLTask:SqlStatementSource="insert into logs(message) values('python-failed');" xmlns:SQLTask="www.microsoft.com/sqlserver/dts/tasks/sqltask" />
+      </DTS:ObjectData>
+    </DTS:Executable>
+    <DTS:Executable
+      DTS:refId="Package\moving_on"
+      DTS:CreationName="Microsoft.ExecuteSQLTask"
+      DTS:Description="Execute SQL Task"
+      DTS:DTSID="{578FBA8C-F8D5-4940-B224-D31D51807760}"
+      DTS:ExecutableType="Microsoft.ExecuteSQLTask"
+      DTS:LocaleID="-1"
+      DTS:ObjectName="moving_on"
+      DTS:TaskContact="Execute SQL Task; Microsoft Corporation; SQL Server 2019; © 2019 Microsoft Corporation; All Rights Reserved;http://www.microsoft.com/sql/support/default.asp;1"
+      DTS:ThreadHint="2">
+      <DTS:Variables />
+      <DTS:ObjectData>
+        <SQLTask:SqlTaskData
+          SQLTask:Connection="{6EB5E7EE-4C2F-4D16-8F04-1F73CE541CC0}"
+          SQLTask:SqlStatementSource="insert into logs(message) values('moving on');" xmlns:SQLTask="www.microsoft.com/sqlserver/dts/tasks/sqltask" />
+      </DTS:ObjectData>
+    </DTS:Executable>
+    <DTS:Executable
+      DTS:refId="Package\pass"
+      DTS:CreationName="Microsoft.ExecuteSQLTask"
+      DTS:Description="Execute SQL Task"
+      DTS:DTSID="{8bfd159b-f062-4ba7-ab5d-da1b31929090}"
+      DTS:ExecutableType="Microsoft.ExecuteSQLTask"
+      DTS:LocaleID="-1"
+      DTS:ObjectName="pass"
+      DTS:TaskContact="Execute SQL Task; Microsoft Corporation; SQL Server 2019; © 2019 Microsoft Corporation; All Rights Reserved;http://www.microsoft.com/sql/support/default.asp;1"
+      DTS:ThreadHint="1">
+      <DTS:Variables />
+      <DTS:ObjectData>
+        <SQLTask:SqlTaskData
+          SQLTask:Connection="{6EB5E7EE-4C2F-4D16-8F04-1F73CE541CC0}"
+          SQLTask:SqlStatementSource="insert into logs(message) values('python-passed');" xmlns:SQLTask="www.microsoft.com/sqlserver/dts/tasks/sqltask" />
+      </DTS:ObjectData>
+    </DTS:Executable>
+    <DTS:Executable
+      DTS:refId="Package\Python- Import to MongoDB"
+      DTS:CreationName="Microsoft.ExecuteProcess"
+      DTS:Description="Execute Process Task"
+      DTS:DTSID="{6c6cd613-35c8-40f0-9522-96d0c0c694b0}"
+      DTS:ExecutableType="Microsoft.ExecuteProcess"
+      DTS:LocaleID="-1"
+      DTS:ObjectName="Python- Import to MongoDB"
+      DTS:TaskContact="Execute Process Task;Microsoft Corporation; SQL Server 2019; © 2019 Microsoft Corporation; All Rights Reserved;http://www.microsoft.com/sql/support/default.asp;1"
+      DTS:ThreadHint="0">
+      <DTS:Variables />
+      <DTS:ObjectData>
+        <ExecuteProcessData
+          Executable="C:\Users\rocke\.envs\api\Scripts\python.exe"
+          Arguments="C:\Users\rocke\GitHub\CycleStats\test.py"
+          WorkingDirectory="C:\Users\rocke\GitHub\CycleStats\" />
+      </DTS:ObjectData>
+    </DTS:Executable>
+  </DTS:Executables>
+  <DTS:PrecedenceConstraints>
+    <DTS:PrecedenceConstraint
+      DTS:refId="Package.PrecedenceConstraints[Constraint]"
+      DTS:CreationName=""
+      DTS:DTSID="{86a741c8-3203-43ee-9793-2f3672d2edcc}"
+      DTS:From="Package\Python- Import to MongoDB"
+      DTS:LogicalAnd="True"
+      DTS:ObjectName="Constraint"
+      DTS:To="Package\pass" />
+    <DTS:PrecedenceConstraint
+      DTS:refId="Package.PrecedenceConstraints[Constraint 1]"
+      DTS:CreationName=""
+      DTS:DTSID="{f3382142-ffd5-4eab-84b7-7f0a1cf48a1b}"
+      DTS:From="Package\Python- Import to MongoDB"
+      DTS:LogicalAnd="True"
+      DTS:ObjectName="Constraint 1"
+      DTS:To="Package\fail"
+      DTS:Value="1" />
+    <DTS:PrecedenceConstraint
+      DTS:refId="Package.PrecedenceConstraints[Constraint 2]"
+      DTS:CreationName=""
+      DTS:DTSID="{4E635784-9B3C-43FE-999D-CDA24C480319}"
+      DTS:From="Package\pass"
+      DTS:ObjectName="Constraint 2"
+      DTS:To="Package\moving_on" />
+    <DTS:PrecedenceConstraint
+      DTS:refId="Package.PrecedenceConstraints[Constraint 3]"
+      DTS:CreationName=""
+      DTS:DTSID="{AF3B74A4-FEDE-4E86-B240-3509F399610E}"
+      DTS:From="Package\fail"
+      DTS:ObjectName="Constraint 3"
+      DTS:To="Package\moving_on" />
+  </DTS:PrecedenceConstraints>
+  <DTS:DesignTimeProperties><![CDATA[<?xml version="1.0"?>
+<!--This CDATA section contains the layout information of the package. The section includes information such as (x,y) coordinates, width, and height.-->
+<!--If you manually edit this section and make a mistake, you can delete it. -->
+<!--The package will still be able to load normally but the previous layout information will be lost and the designer will automatically re-arrange the elements on the design surface.-->
+<Objects
+  Version="8">
+  <!--Each node below will contain properties that do not affect runtime behavior.-->
+  <Package
+    design-time-name="Package">
+    <LayoutInfo>
+      <GraphLayout
+        Capacity="8" xmlns="clr-namespace:Microsoft.SqlServer.IntegrationServices.Designer.Model.Serialization;assembly=Microsoft.SqlServer.IntegrationServices.Graph" xmlns:mssgle="clr-namespace:Microsoft.SqlServer.Graph.LayoutEngine;assembly=Microsoft.SqlServer.Graph" xmlns:assembly="http://schemas.microsoft.com/winfx/2006/xaml" xmlns:mssgm="clr-namespace:Microsoft.SqlServer.Graph.Model;assembly=Microsoft.SqlServer.Graph">
+        <NodeLayout
+          Size="179,42"
+          Id="Package\fail"
+          TopLeft="247,211" />
+        <NodeLayout
+          Size="102,42"
+          Id="Package\pass"
+          TopLeft="69,212" />
+        <NodeLayout
+          Size="215,42"
+          Id="Package\Python- Import to MongoDB"
+          TopLeft="60,60" />
+        <EdgeLayout
+          Id="Package.PrecedenceConstraints[Constraint]"
+          TopLeft="167.5,102">
+          <EdgeLayout.Curve>
+            <mssgle:Curve
+              StartConnector="{assembly:Null}"
+              EndConnector="-47.5,110"
+              Start="0,0"
+              End="-47.5,102.5">
+              <mssgle:Curve.Segments>
+                <mssgle:SegmentCollection
+                  Capacity="5">
+                  <mssgle:LineSegment
+                    End="0,51" />
+                  <mssgle:CubicBezierSegment
+                    Point1="0,51"
+                    Point2="0,55"
+                    Point3="-4,55" />
+                  <mssgle:LineSegment
+                    End="-43.5,55" />
+                  <mssgle:CubicBezierSegment
+                    Point1="-43.5,55"
+                    Point2="-47.5,55"
+                    Point3="-47.5,59" />
+                  <mssgle:LineSegment
+                    End="-47.5,102.5" />
+                </mssgle:SegmentCollection>
+              </mssgle:Curve.Segments>
+            </mssgle:Curve>
+          </EdgeLayout.Curve>
+          <EdgeLayout.Labels>
+            <EdgeLabelCollection />
+          </EdgeLayout.Labels>
+        </EdgeLayout>
+        <EdgeLayout
+          Id="Package.PrecedenceConstraints[Constraint 1]"
+          TopLeft="202,102">
+          <EdgeLayout.Curve>
+            <mssgle:Curve
+              StartConnector="{assembly:Null}"
+              EndConnector="134.5,109"
+              Start="0,0"
+              End="134.5,101.5">
+              <mssgle:Curve.Segments>
+                <mssgle:SegmentCollection
+                  Capacity="5">
+                  <mssgle:LineSegment
+                    End="0,40.0831024930748" />
+                  <mssgle:CubicBezierSegment
+                    Point1="0,40.0831024930748"
+                    Point2="0,44.0831024930748"
+                    Point3="4,44.0831024930748" />
+                  <mssgle:LineSegment
+                    End="130.5,44.0831024930748" />
+                  <mssgle:CubicBezierSegment
+                    Point1="130.5,44.0831024930748"
+                    Point2="134.5,44.0831024930748"
+                    Point3="134.5,48.0831024930748" />
+                  <mssgle:LineSegment
+                    End="134.5,101.5" />
+                </mssgle:SegmentCollection>
+              </mssgle:Curve.Segments>
+            </mssgle:Curve>
+          </EdgeLayout.Curve>
+          <EdgeLayout.Labels>
+            <mssgm:EdgeLabel
+              BoundingBox="52.00865234375,49.0831024930748,30.4826953125,9.7490234375"
+              RelativePosition="Any" />
+          </EdgeLayout.Labels>
+        </EdgeLayout>
+        <NodeLayout
+          Size="170,42"
+          Id="Package\moving_on"
+          TopLeft="140,328" />
+        <EdgeLayout
+          Id="Package.PrecedenceConstraints[Constraint 2]"
+          TopLeft="120,254">
+          <EdgeLayout.Curve>
+            <mssgle:Curve
+              StartConnector="{assembly:Null}"
+              EndConnector="105,74"
+              Start="0,0"
+              End="105,66.5">
+              <mssgle:Curve.Segments>
+                <mssgle:SegmentCollection
+                  Capacity="5">
+                  <mssgle:LineSegment
+                    End="0,33" />
+                  <mssgle:CubicBezierSegment
+                    Point1="0,33"
+                    Point2="0,37"
+                    Point3="4,37" />
+                  <mssgle:LineSegment
+                    End="101,37" />
+                  <mssgle:CubicBezierSegment
+                    Point1="101,37"
+                    Point2="105,37"
+                    Point3="105,41" />
+                  <mssgle:LineSegment
+                    End="105,66.5" />
+                </mssgle:SegmentCollection>
+              </mssgle:Curve.Segments>
+            </mssgle:Curve>
+          </EdgeLayout.Curve>
+          <EdgeLayout.Labels>
+            <EdgeLabelCollection />
+          </EdgeLayout.Labels>
+        </EdgeLayout>
+        <EdgeLayout
+          Id="Package.PrecedenceConstraints[Constraint 3]"
+          TopLeft="336.5,253">
+          <EdgeLayout.Curve>
+            <mssgle:Curve
+              StartConnector="{assembly:Null}"
+              EndConnector="-84.5,75"
+              Start="0,0"
+              End="-84.5,67.5">
+              <mssgle:Curve.Segments>
+                <mssgle:SegmentCollection
+                  Capacity="5">
+                  <mssgle:LineSegment
+                    End="0,40.5804195804196" />
+                  <mssgle:CubicBezierSegment
+                    Point1="0,40.5804195804196"
+                    Point2="0,44.5804195804196"
+                    Point3="-4,44.5804195804196" />
+                  <mssgle:LineSegment
+                    End="-80.5,44.5804195804196" />
+                  <mssgle:CubicBezierSegment
+                    Point1="-80.5,44.5804195804196"
+                    Point2="-84.5,44.5804195804196"
+                    Point3="-84.5,48.5804195804196" />
+                  <mssgle:LineSegment
+                    End="-84.5,67.5" />
+                </mssgle:SegmentCollection>
+              </mssgle:Curve.Segments>
+            </mssgle:Curve>
+          </EdgeLayout.Curve>
+          <EdgeLayout.Labels>
+            <EdgeLabelCollection />
+          </EdgeLayout.Labels>
+        </EdgeLayout>
+      </GraphLayout>
+    </LayoutInfo>
+  </Package>
+</Objects>]]></DTS:DesignTimeProperties>
+</DTS:Executable>
